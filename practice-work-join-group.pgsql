@@ -52,18 +52,19 @@ SELECT * FROM Courses WHERE hours >= 40;
 -- 7
 SELECT concat(Students.surname, ' ', Students.name), round(avg(Exams.mark), 2) FROM Exams INNER JOIN Students ON Students.id = Exams.id_stud GROUP BY Students.id;
 
--- 8 *
-SELECT concat(Students.surname, ' ', Students.name) as fullname, Courses.title, max(Exams.mark) FROM Exams 
+-- 8
+SELECT Courses.title, max(Exams.mark) 
+FROM Exams 
 INNER JOIN Courses ON Courses.id = Exams.id_course 
 INNER JOIN Students ON Students.id = Exams.id_stud
-WHERE Students.surname = 'Snow' AND Students.name = 'Elizabeth'
-GROUP BY fullname, Exams.id_course, Courses.title;
+GROUP BY Courses.title;
 
--- 9 *
-SELECT concat(Students.surname, ' ', Students.name) as fullname, Courses.title, min(Exams.mark) FROM Exams 
+-- 9
+SELECT Courses.title, min(Exams.mark) 
+FROM Exams 
 INNER JOIN Courses ON Courses.id = Exams.id_course 
 INNER JOIN Students ON Students.id = Exams.id_stud
-GROUP BY fullname, Courses.id;
+GROUP BY Courses.title;
 
 -- 10 
 SELECT Courses.title, COUNT(id_stud)
@@ -72,15 +73,19 @@ INNER JOIN Courses ON Courses.id = Exams.id_course
 GROUP BY Courses.id;
 
 -- 11 
-SELECT Courses.title, round(avg(Exams.mark), 2) FROM Exams
+SELECT Courses.title, round(avg(Exams.mark), 2) as avgCourseMark
+FROM Exams
 INNER JOIN Courses ON Courses.id = Exams.id_course
-GROUP BY Courses.id;
+GROUP BY Courses.title
+ORDER BY avgCourseMark DESC;
 
 -- 12 *
-SELECT * FROM Exams
-INNER JOIN Students ON Students.id = Exams.id_course
-WHERE Exams.id_stud = 3;
-
+SELECT Courses.title, max(Exams.mark) as bestMark
+FROM Exams
+INNER JOIN Courses ON Courses.id = Exams.id_course
+WHERE Courses.id = 5
+GROUP BY Courses.title
+ORDER BY bestMark DESC;
 
 /* 
 8 какой предмет студент сдал лучше остальных
