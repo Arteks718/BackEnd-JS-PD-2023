@@ -151,7 +151,175 @@ SELECT PTO.id_order, PTO.id_product, PTO.count
 FROM Products_to_orders AS PTO
 WHERE PTO.id_order = 1;
 
-SELECT PTO.id_order, P.type, P.name, PTO.count
-FROM Products_to_orders AS PTO
+-- info order client 1
+SELECT O.id, M.name AS pizzeria, C.name AS client, C.tel, O.totalSum, O.dateOrder 
+FROM Orders AS O
+INNER JOIN Manufacturers AS M ON M.id = O.id_manufacturer
+INNER JOIN Clients AS C ON C.id = O.id_clients
+WHERE C.id = 1;
+
+-- инфа о заказе№2 пицерии№1 (о последнем заказе)
+SELECT O.id, M.name AS pizzeria, C.name AS client, C.tel, O.totalSum, O.dateOrder 
+FROM Orders AS O
+INNER JOIN Manufacturers AS M ON M.id = O.id_manufacturer
+INNER JOIN Clients AS C ON C.id = O.id_clients
+WHERE M.name = 'Pizzeria #1' AND O.id = 2;
+
+-- список заказов клиента №1
+SELECT O.id, M.name AS pizzeria, C.name AS client, C.tel, O.totalSum, O.dateOrder 
+FROM Orders AS O
+INNER JOIN Manufacturers AS M ON M.id = O.id_manufacturer
+INNER JOIN Clients AS C ON C.id = O.id_clients
+WHERE C.id = 1;
+
+-- список заказов пицерии №1
+SELECT O.id, M.name AS pizzeria, C.name AS client, C.tel, O.totalSum, O.dateOrder 
+FROM Orders AS O
+INNER JOIN Manufacturers AS M ON M.id = O.id_manufacturer
+INNER JOIN Clients AS C ON C.id = O.id_clients
+WHERE M.name = 'Pizzeria #1';
+
+-- список заказов пицерии №1 за сегодня
+SELECT O.id, M.name AS pizzeria, C.name AS client, C.tel, O.totalSum, O.dateOrder 
+FROM Orders AS O
+INNER JOIN Manufacturers AS M ON M.id = O.id_manufacturer
+INNER JOIN Clients AS C ON C.id = O.id_clients
+WHERE O.dateOrder = now();
+
+-- список заказов пицерии №1 за неделю
+SELECT O.id, M.name AS pizzeria, C.name AS client, C.tel, O.totalSum, O.dateOrder 
+FROM Orders AS O
+INNER JOIN Manufacturers AS M ON M.id = O.id_manufacturer
+INNER JOIN Clients AS C ON C.id = O.id_clients
+WHERE EXTRACT(DAY FROM O.dateOrder) BETWEEN EXTRACT(DAY FROM now())-7 AND EXTRACT(DAY FROM now())
+ORDER BY O.id;
+
+-- список заказов пицерии №1 за текущий месяц
+SELECT O.id, M.name AS pizzeria, C.name AS client, C.tel, O.totalSum, O.dateOrder 
+FROM Orders AS O
+INNER JOIN Manufacturers AS M ON M.id = O.id_manufacturer
+INNER JOIN Clients AS C ON C.id = O.id_clients
+WHERE EXTRACT(MONTH FROM O.dateOrder) = EXTRACT(MONTH FROM now())
+ORDER BY O.id;
+
+---------------------------------------------
+
+-- количество заказов по каждому клиенту
+
+SELECT count(O.id), C.name AS client, C.tel, O.dateOrder
+FROM Orders AS O
+INNER JOIN Manufacturers AS M ON M.id = O.id_manufacturer
+INNER JOIN Clients AS C ON C.id = O.id_clients
+GROUP BY client, C.tel, O.dateOrder;
+
+-- количество заказов по каждому клиенту за текущий месяц
+
+SELECT count(O.id), C.name AS client, C.tel, O.dateOrder
+FROM Orders AS O
+INNER JOIN Manufacturers AS M ON M.id = O.id_manufacturer
+INNER JOIN Clients AS C ON C.id = O.id_clients
+WHERE EXTRACT(MONTH FROM O.dateOrder) = EXTRACT(MONTH FROM now())
+GROUP BY client, C.tel, O.dateOrder;
+
+-- количество заказов по каждой пицерии
+
+SELECT count(O.id), M.name, O.dateOrder
+FROM Orders AS O
+INNER JOIN Manufacturers AS M ON M.id = O.id_manufacturer
+INNER JOIN Clients AS C ON C.id = O.id_clients
+GROUP BY M.name, O.dateOrder
+ORDER BY M.name;
+
+-- количество заказов по каждой пицерии за текущий месяц
+
+SELECT count(O.id), M.name, O.dateOrder
+FROM Orders AS O
+INNER JOIN Manufacturers AS M ON M.id = O.id_manufacturer
+INNER JOIN Clients AS C ON C.id = O.id_clients
+WHERE EXTRACT(MONTH FROM O.dateOrder) = EXTRACT(MONTH FROM now())
+GROUP BY M.name, O.dateOrder
+ORDER BY M.name;
+
+---------------------------------------------
+
+-- количество заказов по клиенту №1
+
+SELECT count(O.id), C.name AS client, C.tel, O.dateOrder
+FROM Orders AS O
+INNER JOIN Manufacturers AS M ON M.id = O.id_manufacturer
+INNER JOIN Clients AS C ON C.id = O.id_clients
+WHERE C.id = 1
+GROUP BY client, C.tel, O.dateOrder;
+
+-- количество заказов по клиенту №1 за текущий месяц
+
+SELECT count(O.id), C.name AS client, C.tel, O.dateOrder
+FROM Orders AS O
+INNER JOIN Manufacturers AS M ON M.id = O.id_manufacturer
+INNER JOIN Clients AS C ON C.id = O.id_clients
+WHERE EXTRACT(MONTH FROM O.dateOrder) = EXTRACT(MONTH FROM now()) AND C.id = 1
+GROUP BY client, C.tel, O.dateOrder;
+
+-- количество заказов по пицерии №1
+
+SELECT count(O.id), M.name, O.dateOrder
+FROM Orders AS O
+INNER JOIN Manufacturers AS M ON M.id = O.id_manufacturer
+INNER JOIN Clients AS C ON C.id = O.id_clients
+WHERE M.id = 1
+GROUP BY M.name, O.dateOrder
+ORDER BY M.name;
+
+-- количество заказов по пицерии №1 за текущий месяц
+
+SELECT count(O.id), M.name, O.dateOrder
+FROM Orders AS O
+INNER JOIN Manufacturers AS M ON M.id = O.id_manufacturer
+INNER JOIN Clients AS C ON C.id = O.id_clients
+WHERE EXTRACT(MONTH FROM O.dateOrder) = EXTRACT(MONTH FROM now()) AND M.id = 1
+GROUP BY M.name, O.dateOrder
+ORDER BY M.name;
+
+---------------------------------------------
+
+-- в каких заказах заказывали пицку №1
+SELECT PTO.id_order, P.name FROM products_to_orders AS PTO
 INNER JOIN Products AS P ON P.id = PTO.id_product
-WHERE PTO.id_order = 1;
+WHERE name = 'pizza name#1';
+
+-- в каких заказах заказывали пицку №1 за текущий месяц
+SELECT PTO.id_order, P.name, O.dateOrder FROM products_to_orders AS PTO
+INNER JOIN Products AS P ON P.id = PTO.id_product
+INNER JOIN Orders AS O ON O.id = PTO.id_order
+WHERE name = 'pizza name#1' AND EXTRACT(MONTH FROM O.dateOrder) = EXTRACT(MONTH FROM now());
+
+---------------------------------------------
+
+-- подсчитать общий вес заказа №1
+
+SELECT O.id, concat(sum(PTM.weight), ' gram') FROM Orders AS O
+INNER JOIN products_to_manufacturers AS PTM ON O.id_manufacturer = PTM.id_manufacturer
+WHERE O.id = 1
+GROUP BY O.id;
+
+-- подсчитать по каждому продукту промежуточную стоимость для заказа №1
+
+SELECT  FROM products_to_manufacturers AS PTM
+INNER JOIN Products AS P ON P.id = PTM.id_product;
+
+-- подсчитать общую стоимость заказа №1
+
+SELECT P.type, P.name, PTM.price, PTO.count, sum(PTO.count * PTM.price) FROM Orders AS O
+INNER JOIN products_to_orders AS PTO ON PTO.id_order = O.id
+INNER JOIN products_to_manufacturers AS PTM ON PTM.id_manufacturer = O.id_manufacturer AND PTM.id_product = PTO.id_product
+INNER JOIN Products AS P ON P.id = PTO.id_product
+WHERE O.id = 1
+GROUP BY P.type, P.name, PTM.price, PTO.count;
+
+
+UPDATE Cheque AS C
+SET sum_Product = Res.sumP
+FROM Cheque, 
+(SELECT C.id, C.id_sale, (C.count_Product * P.price) AS sumP FROM Cheque AS C INNER JOIN Products AS P ON P.id = C.id_Product) AS Res
+WHERE Res.id_sale = C.id_sale AND Res.id = C.id;
+
