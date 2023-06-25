@@ -184,3 +184,29 @@ CREATE TABLE sandbox.testTable(
 SELECT * FROM sandbox.testTable;
 
 DROP SCHEMA sandbox CASCADE
+
+-- view
+CREATE VIEW owners_chats AS
+SELECT C.id, C.name, (U.name || ' ' || U.surname) as fullname, C.created
+FROM Chats AS C
+JOIN Users AS U ON U.id = C.owner_id
+
+SELECT * FROM owners_chats
+
+CREATE VIEW messages_view AS
+SELECT M.value, M.created, M.chat_id, U.name || ' ' || U.surname
+FROM Messages AS M
+INNER JOIN Users AS U ON U.id = M.author_id
+
+SELECT * FROM messages_view
+DROP SCHEMA messages_view
+SELECT value, chat_id FROM messages_view;
+
+SELECT chat_id, count(value) FROM messages_view GROUP BY chat_id;
+
+ALTER TABLE messages_view RENAME COLUMN "?column?"" to fullname
+
+CREATE VIEW top3messages AS
+SELECT * FROM messages_view LIMIT 3
+
+SELECT * FROM top3messages;
