@@ -1,5 +1,6 @@
 DROP TABLE Supplies, Providers, Employees, Contents, Products, Categories, Employees, Positions
 
+--Закупки
 CREATE TABLE Supplies(
   id serial PRIMARY KEY,
   date timestamp DEFAULT now(),
@@ -8,6 +9,7 @@ CREATE TABLE Supplies(
   total_sum money DEFAULT 0 CHECK(total_sum >= money(0))
 );
 
+--Состав закупки
 CREATE TABLE Contents(
   id_supply integer REFERENCES Supplies(id) ON DELETE SET NULL ON UPDATE CASCADE,
   id_product integer REFERENCES Products(id) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -22,6 +24,9 @@ CREATE TABLE Products(
   sale_price money CHECK(sale_price >= money(0))
 );
 
+ALTER TABLE Products ADD COLUMN markup integer CHECK(markup>0)
+SELECT * FROM Products;
+UPDATE Products SET markup = 10 WHERE id = 5;
 CREATE TABLE Categories(
   id serial PRIMARY KEY,
   name varchar(100) NOT NULL,
@@ -128,3 +133,75 @@ WHERE S.id = 1;
 SELECT * FROM Contents
 JOIN Products ON Products.id = Contents.id_product
 WHERE id_supply = 1;
+
+--Вывести полную информацию о конкретном поставщике
+SELECT DISTINCT id FROM Providers WHERE id = 3;
+--Вывести список поставщиков с контактными данными
+SELECT name, phone_number, email FROM Providers;
+
+--Вывести общую информацию о закупке
+SELECT S.id, S.date, Providers.name, employees.name FROM supplies AS S
+INNER JOIN Providers ON Providers.id = S.id_provider
+INNER JOIN employees ON employees.id = S.id_employee
+--Вывести состав закупки
+SELECT Contents.id_supply, Products.name, Contents.counts, Contents.supply_price 
+FROM Contents 
+INNER JOIN Products ON Products.id = Contents.id_product;
+
+--Вывести информацию о товаре включая закупочную цену и цену реалзации
+SELECT P.name, C.supply_price, P.markup,P.sale_price, CG.name FROM Contents AS C
+INNER JOIN Products AS P ON P.id = C.id_product
+INNER JOIN Categories AS CG ON CG.id = P.id_category
+--вывести список товаров определенной категории и упорядочить по цене
+SELECT P.name, C.name, P.sale_price FROM Products AS P
+INNER JOIN Categories AS C ON C.id = P.id_category
+WHERE C.id = 2
+ORDER BY P.sale_price;
+
+--Вывести список сотрудников с указанием должности
+SELECT concat(E.surname,' ',E.name), P.name, E.staff_id, P.salary FROM Employees AS E
+INNER JOIN Positions AS P ON P.id = E.id_position
+--вывести список операторов
+SELECT concat(E.surname,' ',E.name), P.name, E.staff_id, P.salary FROM Employees AS E
+INNER JOIN Positions AS P ON P.id = E.id_position
+WHERE P.name = 'operator'
+
+--вычислить цену реализации товара Products.sale_price
+UPDATE Products SET sale_price = Res.sp
+FROM Products AS P,
+(SELECT P.id, (C.supply_price * P.markup) as sp FROM Contents AS C
+INNER JOIN Products AS P ON P.id = C.id_product) AS Res
+WHERE Res.id = P.id
+
+UPDATE Products AS P
+SET sale_price = Res.sp
+FROM Products,
+  (SELECT P.id,(max(C.supply_price) * P.markup) as sp FROM Products AS P
+  INNER JOIN Contents AS C ON C.id_product = P.id
+  GROUP BY P.id, C.supply_price, P.markup) AS Res
+WHERE Res.id = P.id
+
+SELECT * FROM Products;
+SELECT * FROM Contents;
+
+SELECT P.id, max((C.supply_price) * P.markup) as sp FROM Products AS P
+  INNER JOIN Contents AS C ON C.id_product = P.id
+  GROUP BY P.id, C.supply_price, P.markup;
+
+-- сколько поставок сделал каждый поставщик
+SELECT id_provider, count(id) FROM Supplies
+GROUP BY id_provider;
+-- сколько поставок сделал каждый поставщик за текущий месяц
+SELECT id_provider, count(id) FROM Supplies
+WHERE EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM now())
+GROUP BY id_provider;
+-- сколько поставок сделал каждый поставщик за этот год
+SELECT id_provider, count(id) FROM Supplies
+WHERE EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM now())
+GROUP BY id_provider;
+-- сколько товаров в каждой категории
+SELECT id_category, count(id) FROM Products
+GROUP BY id_category;
+-- сколько сотрудников по каждой должности
+SELECT id_position, count(id) FROM Employees
+GROUP BY id_position;
