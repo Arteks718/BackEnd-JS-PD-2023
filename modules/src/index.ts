@@ -1,12 +1,28 @@
-import {greeting} from './greeting.js'
-import calc from './calculator.js'
-import os from 'os';
-console.log(greeting('Artyom', 'Kleshchov'))
+import fs from 'fs';
+import path from 'path';
+import util from 'util';
 
-console.log(calc.sum(5, 3));
-console.log(calc.sub(5, 3));
-console.log(Math.round(calc.div(5, 3) * 100) / 100);
-console.log(calc.mult(5, 3));
-console.log(os.userInfo({encoding: 'utf8'}));
-console.log(os.platform(), os.release());
-console.log(calc.calc.mult(5,3))
+const text1 = fs.readFileSync(path.resolve("./readme.md"), {
+  encoding: "utf-8",
+});
+
+console.log("Sync file reading");
+console.log(text1);
+
+// console.log(path.dirname('./'))
+// const text = fs.readFile(path.resolve('readme.md'), {encoding: 'utf8'},
+//   (error, data) => {
+//     if(error) {console.log('Error file reading')}
+//     else {console.log('Data:', data);}
+//   })
+// console.log(text)
+
+const readAsync = util.promisify(fs.readFileSync);
+
+readAsync("../../readme.md", { encoding: "utf-8" })
+  .then((data) => console.log(data))
+  .catch((err) => console.log("Error file reading"));
+
+const content = fs.readdirSync('./src');
+console.log('current dir content:');
+console.log(content);
