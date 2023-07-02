@@ -1,20 +1,38 @@
+import path from "path";
+import fs from "fs";
+import util from "util";
+const readFile = util.promisify(fs.readFile);
 let k = 0;
 const requestListener = (req, res) => {
     const { url, method } = req;
-    console.log('client request: ', url, method);
-    res.statusCode = 200;
-    res.end(`<!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-  </head>
-  <body>
-    <h1>Hello world!</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas facilis, harum dolor eligendi earum unde blanditiis perferendis dolorum id amet.</p>
-  </body>
-  </html>`);
-    // res.end(`Hello, client! it is message #${k++/2}`);
+    console.log("client request: ", url, method);
+    if (method == "GET") {
+        const page = url == "/" ? "about.html" : url;
+        const regHTMLPage = /^.*\.html$/;
+        if (regHTMLPage.test(page)) {
+            const __dirname = path.dirname("./pages/");
+            const pagePath = path.join(__dirname, "/pages/", page);
+            if (fs.existsSync(pagePath)) {
+                readFile(pagePath)
+                    .then((data) => {
+                    res.statusCode = 200;
+                    res.setHeader("Content-Type", "text/html");
+                    res.end(data);
+                })
+                    .catch((error) => {
+                    res.statusCode = 500;
+                    console.log("asdasd");
+                    res.end("Server data error", error);
+                });
+            }
+            else {
+                readFile(path.join(__dirname, "/pages/", "404.html")).then((data) => {
+                    res.statusCode = 404;
+                    res.setHeader("Content-Type", "text/html");
+                    res.end(data);
+                });
+            }
+        }
+    }
 };
 export { requestListener };

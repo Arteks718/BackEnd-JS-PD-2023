@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node index.js"
+    "start": "tsc && nodemon index.js",
+    "dev": "tsc && node index.js"
+
   },
   "keywords": [],
   "author": "",
