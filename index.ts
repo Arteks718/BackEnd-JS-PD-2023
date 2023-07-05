@@ -1,11 +1,14 @@
 import http from 'http';
-import fs from 'fs';
-import { requestListener } from './requestListener.js'
+import app from './app.js'
 
-const HOST:string = '127.0.0.1';
-const PORT:number = 3000;
+const server = http.createServer(app);
 
-const server:http.Server = http.createServer(requestListener)
+type IPort = number | undefined;
+type IHost = string | undefined;
+
+const PORT: IPort = 5000 || process.env.PORT;
+const HOST: IHost ='127.0.0.1' || process.env.HOST;
+
 server.listen(PORT, HOST, () => {
-  console.log(`Server is listening on host ${HOST} on ${PORT} port`)
-});
+  console.log(`Server is listening on ${HOST} on ${PORT}`);
+})
