@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request } from "express";
 import path from "path";
 // import users from "./users.json" assert { type: 'json'}
 const app = express();
@@ -7,6 +7,7 @@ app.use(express.json());
 app.use("/", express.static("public"));
 
 interface IUsers {
+  id: number;
   gender: string;
   name: {
     title: string;
@@ -51,10 +52,6 @@ interface IUsers {
   };
   phone: string;
   cell: string;
-  id: {
-    name: string;
-    value: string | null;
-  };
   picture: {
     large: string;
     medium: string;
@@ -65,6 +62,7 @@ interface IUsers {
 
 const usersDB:IUsers[] = [
   {
+    id: 1,
     gender: "female",
     name: {
       title: "Ms",
@@ -110,10 +108,6 @@ const usersDB:IUsers[] = [
     },
     phone: "8046758455",
     cell: "9400114225",
-    id: {
-      name: "UIDAI",
-      value: "617765994211",
-    },
     picture: {
       large: "https://randomuser.me/api/portraits/women/16.jpg",
       medium: "https://randomuser.me/api/portraits/med/women/16.jpg",
@@ -122,6 +116,7 @@ const usersDB:IUsers[] = [
     nat: "IN",
   },
   {
+    id: 2,
     gender: "female",
     name: {
       title: "Ms",
@@ -167,10 +162,6 @@ const usersDB:IUsers[] = [
     },
     phone: "(891)-220-6068",
     cell: "(454)-149-2125",
-    id: {
-      name: "",
-      value: null,
-    },
     picture: {
       large: "https://randomuser.me/api/portraits/women/51.jpg",
       medium: "https://randomuser.me/api/portraits/med/women/51.jpg",
@@ -179,6 +170,7 @@ const usersDB:IUsers[] = [
     nat: "NZ",
   },
   {
+    id: 3,
     gender: "female",
     name: {
       title: "Mrs",
@@ -224,10 +216,6 @@ const usersDB:IUsers[] = [
     },
     phone: "08-864-665",
     cell: "046-702-28-98",
-    id: {
-      name: "HETU",
-      value: "NaNNA572undefined",
-    },
     picture: {
       large: "https://randomuser.me/api/portraits/women/75.jpg",
       medium: "https://randomuser.me/api/portraits/med/women/75.jpg",
@@ -236,6 +224,7 @@ const usersDB:IUsers[] = [
     nat: "FI",
   },
   {
+    id: 4,
     gender: "female",
     name: {
       title: "Madame",
@@ -281,10 +270,6 @@ const usersDB:IUsers[] = [
     },
     phone: "075 805 20 48",
     cell: "079 582 07 59",
-    id: {
-      name: "AVS",
-      value: "756.5847.3512.15",
-    },
     picture: {
       large: "https://randomuser.me/api/portraits/women/73.jpg",
       medium: "https://randomuser.me/api/portraits/med/women/73.jpg",
@@ -293,6 +278,7 @@ const usersDB:IUsers[] = [
     nat: "CH",
   },
   {
+    id: 5,
     gender: "female",
     name: {
       title: "Ms",
@@ -338,10 +324,6 @@ const usersDB:IUsers[] = [
     },
     phone: "(068) K89-3276",
     cell: "(099) B60-5868",
-    id: {
-      name: "",
-      value: null,
-    },
     picture: {
       large: "https://randomuser.me/api/portraits/women/33.jpg",
       medium: "https://randomuser.me/api/portraits/med/women/33.jpg",
@@ -350,6 +332,7 @@ const usersDB:IUsers[] = [
     nat: "UA",
   },
   {
+    id: 6,
     gender: "female",
     name: {
       title: "Mrs",
@@ -395,10 +378,6 @@ const usersDB:IUsers[] = [
     },
     phone: "9348875059",
     cell: "7145929636",
-    id: {
-      name: "UIDAI",
-      value: "773537017018",
-    },
     picture: {
       large: "https://randomuser.me/api/portraits/women/34.jpg",
       medium: "https://randomuser.me/api/portraits/med/women/34.jpg",
@@ -407,6 +386,7 @@ const usersDB:IUsers[] = [
     nat: "IN",
   },
   {
+    id: 7,
     gender: "female",
     name: {
       title: "Miss",
@@ -452,10 +432,6 @@ const usersDB:IUsers[] = [
     },
     phone: "0158-6664039",
     cell: "0178-9882935",
-    id: {
-      name: "SVNR",
-      value: "66 081271 K 561",
-    },
     picture: {
       large: "https://randomuser.me/api/portraits/women/1.jpg",
       medium: "https://randomuser.me/api/portraits/med/women/1.jpg",
@@ -464,6 +440,7 @@ const usersDB:IUsers[] = [
     nat: "DE",
   },
   {
+    id: 8,
     gender: "male",
     name: {
       title: "Mr",
@@ -509,10 +486,6 @@ const usersDB:IUsers[] = [
     },
     phone: "0384-7207598",
     cell: "0173-8037106",
-    id: {
-      name: "SVNR",
-      value: "71 031195 D 280",
-    },
     picture: {
       large: "https://randomuser.me/api/portraits/men/42.jpg",
       medium: "https://randomuser.me/api/portraits/med/men/42.jpg",
@@ -521,6 +494,7 @@ const usersDB:IUsers[] = [
     nat: "DE",
   },
   {
+    id: 9,
     gender: "male",
     name: {
       title: "Mr",
@@ -566,10 +540,6 @@ const usersDB:IUsers[] = [
     },
     phone: "(037) 3973867",
     cell: "(06) 75454730",
-    id: {
-      name: "BSN",
-      value: "26051302",
-    },
     picture: {
       large: "https://randomuser.me/api/portraits/men/90.jpg",
       medium: "https://randomuser.me/api/portraits/med/men/90.jpg",
@@ -578,6 +548,7 @@ const usersDB:IUsers[] = [
     nat: "NL",
   },
   {
+    id: 10,
     gender: "male",
     name: {
       title: "Mr",
@@ -623,10 +594,6 @@ const usersDB:IUsers[] = [
     },
     phone: "7440419544",
     cell: "7988711359",
-    id: {
-      name: "UIDAI",
-      value: "728117545664",
-    },
     picture: {
       large: "https://randomuser.me/api/portraits/men/9.jpg",
       medium: "https://randomuser.me/api/portraits/med/men/9.jpg",
@@ -644,7 +611,12 @@ class Users {
     this.users = [...data]
     this.count = this.users.length;
   }
-  getUserById(id: number) {}
+  getUserById(id: number) {
+    const findIndex = this.users.findIndex( 
+      u => u.id == id
+    )
+    return this.users[findIndex]
+  }
   getAllUsers() {
     return [...this.users]
   }
@@ -664,12 +636,18 @@ app.get("/users", (req, res) => {
   res.status(200).send(data);
 });
 // get user by id
-app.get("/users/id", (req, res) => {});
+app.get("/users/:id", (req, res) => {
+  const { id } = req.params;
+  console.log(typeof id)
+  const findUser = usersInstance.getUserById(Number(id));
+  console.log(findUser)
+  res.status(200).send(findUser);
+});
 // create new user
 app.post("/users", (req, res) => {});
 // update user by id
-app.patch("/users/id", (req, res) => {});
+app.patch("/users/:id", (req, res) => {});
 // delete user by id
-app.delete("/users/id", (req, res) => {});
+app.delete("/users/:id", (req, res) => {});
 
 export default app;
