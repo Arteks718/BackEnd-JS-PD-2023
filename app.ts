@@ -613,7 +613,7 @@ class Users {
   }
   getUserById(id: number) {
     const findIndex = this.users.findIndex( u => u.id == id )
-    return this.users[findIndex]
+    return findIndex === - 1 ? null : this.users[findIndex]
   }
   getAllUsers() {
     return [...this.users]
@@ -629,7 +629,7 @@ class Users {
       ...this.users[findIndex],
       ...info
     }
-    return this.users[findIndex];
+    return findIndex === - 1 ? null : this.users[findIndex];
   }
   deleteUser(id: number) {
     const findIndex = this.users.findIndex( u => u.id == id )
