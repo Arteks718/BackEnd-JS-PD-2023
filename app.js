@@ -547,7 +547,11 @@ class Users {
     getAllUsers() {
         return [...this.users];
     }
-    createUser(user) { }
+    createUser(user) {
+        this.count++;
+        this.users.push(Object.assign(Object.assign({}, user), { id: this.count }));
+        return this.users[this.count - 1];
+    }
     updateUser(id, info) { }
     deleteUser(id) { }
     clg() { console.log(this.users); }
@@ -568,7 +572,11 @@ app.get("/users/:id", (req, res) => {
     res.status(200).send(findUser);
 });
 // create new user
-app.post("/users", (req, res) => { });
+app.post("/users", (req, res) => {
+    const { body } = req;
+    const newUser = usersInstance.createUser(body);
+    res.status(201).send(newUser);
+});
 // update user by id
 app.patch("/users/:id", (req, res) => { });
 // delete user by id
