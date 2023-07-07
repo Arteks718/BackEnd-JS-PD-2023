@@ -631,7 +631,11 @@ class Users {
     }
     return this.users[findIndex];
   }
-  deleteUser(id: number) {}
+  deleteUser(id: number) {
+    const findIndex = this.users.findIndex( u => u.id == id )
+    // this.users.splice(findIndex, 1)
+    return findIndex === -1 ? null : this.users.splice(findIndex, 1)
+  }
   clg() {console.log(this.users)}
 }
 
@@ -666,6 +670,10 @@ app.patch("/users/:id", (req, res) => {
   res.status(200).send(findUser);
 });
 // delete user by id
-app.delete("/users/:id", (req, res) => {});
+app.delete("/users/:id", (req, res) => {
+  const { id } = req.params;
+  const findUser = usersInstance.deleteUser(Number(id));
+  res.status(200).send(findUser);
+});
 
 export default app;
