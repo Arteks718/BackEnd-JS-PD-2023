@@ -8,25 +8,43 @@ export const userController = {
   },
   getUserById: (req: Request, res: Response) => {
     const { id } = req.params;
-    console.log(typeof id);
     const findUser = usersModel.getUserById(Number(id));
-    console.log(findUser);
-    res.status(200).send(findUser);
+    if(findUser) {
+      res.status(200).send(findUser);
+      return;
+    } else {
+      res.status(404).send(`User ${id} not found`);
+    }
   },
   createUser: (req: Request, res: Response) => {
     const { body } = req;
     const newUser = usersModel.createUser(body);
-    res.status(201).send(newUser);
+    if(newUser) {
+      res.status(201).send(newUser);
+      return;
+    } else {
+      res.status(404).send(`Bad request. New user is not created`);
+    }
   },
   updateUser: (req: Request, res: Response) => {
     const { id } = req.params;
     const { body } = req;
     const findUser = usersModel.updateUser(Number(id), body);
-    res.status(200).send(findUser);
+    if(findUser) {
+      res.status(200).send(findUser);
+      return;
+    } else {
+      res.status(404).send(`User ${id} not found`);
+    }
   },
   deleteUser: (req: Request, res: Response) => {
     const { id } = req.params;
     const findUser = usersModel.deleteUser(Number(id));
-    res.status(200).send(findUser);
+    if(findUser) {
+      res.status(200).send(findUser);
+      return;
+    } else {
+      res.status(404).send(`User ${id} not found`);
+    }
   },
 };
