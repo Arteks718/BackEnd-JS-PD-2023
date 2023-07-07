@@ -552,7 +552,11 @@ class Users {
         this.users.push(Object.assign(Object.assign({}, user), { id: this.count }));
         return this.users[this.count - 1];
     }
-    updateUser(id, info) { }
+    updateUser(id, info) {
+        const findIndex = this.users.findIndex(u => u.id == id);
+        this.users[findIndex] = Object.assign(Object.assign({}, this.users[findIndex]), info);
+        return this.users[findIndex];
+    }
     deleteUser(id) { }
     clg() { console.log(this.users); }
 }
@@ -578,7 +582,12 @@ app.post("/users", (req, res) => {
     res.status(201).send(newUser);
 });
 // update user by id
-app.patch("/users/:id", (req, res) => { });
+app.patch("/users/:id", (req, res) => {
+    const { id } = req.params;
+    const { body } = req;
+    const findUser = usersInstance.updateUser(Number(id), body);
+    res.status(200).send(findUser);
+});
 // delete user by id
 app.delete("/users/:id", (req, res) => { });
 export default app;

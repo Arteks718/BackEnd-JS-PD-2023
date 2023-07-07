@@ -612,9 +612,7 @@ class Users {
     this.count = this.users.length;
   }
   getUserById(id: number) {
-    const findIndex = this.users.findIndex( 
-      u => u.id == id
-    )
+    const findIndex = this.users.findIndex( u => u.id == id )
     return this.users[findIndex]
   }
   getAllUsers() {
@@ -625,7 +623,14 @@ class Users {
     this.users.push({...user, id: this.count})
     return this.users[this.count-1]
   }
-  updateUser(id: number, info: string) {}
+  updateUser(id: number, info: string[] | number []) {
+    const findIndex = this.users.findIndex( u => u.id == id )
+    this.users[findIndex] = {
+      ...this.users[findIndex],
+      ...info
+    }
+    return this.users[findIndex];
+  }
   deleteUser(id: number) {}
   clg() {console.log(this.users)}
 }
@@ -654,7 +659,12 @@ app.post("/users", (req, res) => {
   res.status(201).send(newUser)
 });
 // update user by id
-app.patch("/users/:id", (req, res) => {});
+app.patch("/users/:id", (req, res) => {
+  const { id } = req.params;
+  const { body } = req;
+  const findUser = usersInstance.updateUser(Number(id), body);
+  res.status(200).send(findUser);
+});
 // delete user by id
 app.delete("/users/:id", (req, res) => {});
 

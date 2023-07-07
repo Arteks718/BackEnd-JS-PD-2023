@@ -1,0 +1,11 @@
+PATCH http://localhost:5000/users/5 HTTP/1.1
+Content-Type: application/json
+
+{
+  "gender": "male",
+  "name": {
+    "title": "Mr",
+    "first": "Test",
+    "last": "Testovich"
+  }
+}
