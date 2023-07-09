@@ -1,18 +1,10 @@
-import express from "express";
-import { userController } from "./controllers/userController.js";
-// import users from "./users.json" assert { type: 'json'}
-const app = express();
-app.use(express.json());
-app.use("/", express.static("public"));
-//CRUD for user
-// get all users
-app.get("/users", userController.getAllUsers);
-// get user by id
-app.get("/users/:id", userController.getUserById);
-// create new user
-app.post("/users", userController.createUser);
-// update user
-app.patch("/users/:id", userController.updateUser);
-// delete user
-app.delete("/users/:id", userController.deleteUser);
-export default app;
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const app = (0, express_1.default)();
+app.use(express_1.default.json());
+app.use("/", express_1.default.static("public"));
+exports.default = app;
