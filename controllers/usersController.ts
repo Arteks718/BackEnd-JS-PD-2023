@@ -1,5 +1,9 @@
+// const { Users } = require('')
+
 const usersController:IUsersController = {
-  getUser: (req, res) => {},
+  getUser: (req, res) => {
+
+  },
   getUsers: (req, res) => {},
   createNewUser: (req, res) => {},
   updateUser: (req, res) => {},

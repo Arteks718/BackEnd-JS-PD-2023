@@ -1,6 +1,8 @@
 "use strict";
+// const { Users } = require('')
 const usersController = {
-    getUser: (req, res) => { },
+    getUser: (req, res) => {
+    },
     getUsers: (req, res) => { },
     createNewUser: (req, res) => { },
     updateUser: (req, res) => { },
