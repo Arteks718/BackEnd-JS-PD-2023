@@ -5,7 +5,7 @@ const productsRouter = require('./routes/productsRouter')
 const appRouter = Router();
 
 appRouter.use('/users', usersRouter);
-appRouter.use('/tasks', productsRouter);
+appRouter.use('/products', productsRouter);
 
 module.exports = appRouter;
 

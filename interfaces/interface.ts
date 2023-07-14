@@ -1,6 +1,8 @@
+import Express from 'express'
+
 type TypeController = (req: Express.Request, res: Express.Response) => void
 
-interface IUsersController {
+export interface IUsersController {
   getUser: TypeController;
   getUsers: TypeController;
   createNewUser: TypeController;
@@ -8,7 +10,7 @@ interface IUsersController {
   deleteUser: TypeController;
 }
 
-interface IProductsController {
+export interface IProductsController {
   getProduct: TypeController;
   getProducts: TypeController;
   createNewProduct: TypeController;

@@ -1,8 +1,7 @@
 "use strict";
-// const { Users } = require('')
+Object.defineProperty(exports, "__esModule", { value: true });
 const usersController = {
-    getUser: (req, res) => {
-    },
+    getUser: (req, res) => { },
     getUsers: (req, res) => { },
     createNewUser: (req, res) => { },
     updateUser: (req, res) => { },
