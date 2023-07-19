@@ -33,4 +33,10 @@ const {User} = require('./db/models')
 //   }
 // }).then(console.log);
 
-User.findByPk(2).then(console.log)
+// User.destroy({
+//   where: {
+//     createdAt: null
+//   }
+// }).then(console.log);
+
+// User.findByPk(2).then(console.log)

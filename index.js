@@ -28,4 +28,9 @@ const { User } = require('./db/models');
 //     exclude: ["createdAt", "updatedAt", "passwordHash", "id"]
 //   }
 // }).then(console.log);
-User.findByPk(2).then(console.log);
+User.destroy({
+    where: {
+        createdAt: null
+    }
+}).then(console.log);
+// User.findByPk(2).then(console.log)
