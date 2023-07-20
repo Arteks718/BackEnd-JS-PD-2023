@@ -1,0 +1,11 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "2907324013",
+    "database": "sequelize_practice",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {},
+  "production": {}
+}
