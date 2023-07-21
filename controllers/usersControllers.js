@@ -12,6 +12,7 @@ module.exports = {
       res.status(201).send(preparedUser)
     } catch (error) {
       res.status(500).send('Server error')
+      console.log(error)
     }
   },
   getUsers:async (req, res) => {

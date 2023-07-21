@@ -3,11 +3,7 @@ PATCH http://localhost:5000/api/users/1 HTTP/1.1
 Content-Type: application/json
 
 {
-  "firstName": "John",
-  "lastName": "Doe",
-  "email": "doe@example.com",
-  "passwordHash": "admin",
-  "birthday": "1995-05-27"
+  "passwordHash" : "testpass"
 }
 
 # Check noexisting user - 404, user not fount
