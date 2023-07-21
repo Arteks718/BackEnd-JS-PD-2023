@@ -1,3 +1,1 @@
-import { usersController } from './usersControllers.js' 
-
-export default usersController
+module.exports.usersController = require('./usersControllers.js')

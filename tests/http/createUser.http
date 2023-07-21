@@ -1,0 +1,11 @@
+POST http://localhost:5000/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "firstName": "Tom",
+  "lastName": "Hanks",
+  "email": "tomhanks2@gmail.com",
+  "passwordHash": "qwerty",
+  "birthday": "10-10-1990",
+  "gender": "male"
+}

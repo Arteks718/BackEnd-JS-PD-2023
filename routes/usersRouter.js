@@ -1,8 +1,9 @@
-import { Router } from "express";
-import usersController from '../controllers/index.js'
+const { Router } = require("express")
+const {usersController} = require('../controllers/index.js')
 const usersRouter = Router();
+
 usersRouter.route("/")
-  .get(usersController.getUser)
+  .get(usersController.getUsers)
   .post(usersController.createUser);
 
 usersRouter.route("/:userId")
@@ -10,4 +11,4 @@ usersRouter.route("/:userId")
   .patch(usersController.updateUserById)
   .delete(usersController.deleteUserById);
 
-export default usersRouter;
+module.exports = usersRouter
