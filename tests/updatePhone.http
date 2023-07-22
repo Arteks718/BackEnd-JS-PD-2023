@@ -1,0 +1,6 @@
+PATCH http://localhost:5000/api/phones/6 HTTP/1.1
+Content-Type: application/json
+
+{
+  "screen_diagonal": 6
+}

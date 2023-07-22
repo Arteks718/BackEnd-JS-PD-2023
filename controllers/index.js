@@ -1,1 +1,1 @@
-module.exports.usersController = require('./usersControllers.js')
+module.exports.phoneController = require('./phoneController.js')
