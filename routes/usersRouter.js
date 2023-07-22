@@ -1,14 +1,18 @@
-const { Router } = require("express")
-const {usersController} = require('../controllers/index.js')
+const { Router } = require("express");
+const { usersController } = require("../controllers/index.js");
+const { validate } = require('../middleware')
+
 const usersRouter = Router();
 
-usersRouter.route("/")
+usersRouter
+  .route("/")
   .get(usersController.getUsers)
-  .post(usersController.createUser);
+  .post(validate.userValidation, usersController.createUser);
 
-usersRouter.route("/:userId")
+usersRouter
+  .route("/:userId")
   .get(usersController.getUserById)
   .patch(usersController.updateUserById)
   .delete(usersController.deleteUserById);
 
-module.exports = usersRouter
+module.exports = usersRouter;

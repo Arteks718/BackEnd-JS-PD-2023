@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: { 
-        isAlpha: true, 
+        is: /^[A-Z][a-z]+$/,
         len: [2, 64]
       }
     },
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: { 
-        isAlpha: true, 
+        is: /^[A-Z][a-z]+$/,
         len: [2, 64]
       }
     },
@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATEONLY,
       validate: {
         isDate: true,
-        isBefore: new Date().toLocaleDateString()
+        isBefore: new Date().toISOString()
       }
     },
     gender: {
