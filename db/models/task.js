@@ -14,11 +14,24 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Task.init({
-    body: DataTypes.STRING,
-    isDone: DataTypes.BOOLEAN,
-    deadline: DataTypes.DATE
+    body: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    isDone: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    deadline: {
+      type: DataTypes.DATE,
+      validate: {
+        isDate: true,
+        isAfter: new Date().toISOString(),
+      }
+    }
   }, {
     sequelize,
+    underscored: true,
     modelName: 'Task',
   });
   return Task;
