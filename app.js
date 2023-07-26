@@ -1,8 +1,15 @@
-const express = require('express');
-const appRouter = require('./router')
+const appRouter = require("./routes/index.js");
+const express = require("express");
+
 const app = express();
+app.use(express.json());
 
-app.use(express.json())
-app.use('/api', appRouter)
+app.get("/test", (req, res, next) => {
+  console.log(new Date())
+  next()
+}, (req, res) => {
+  res.send(req.query);
+});
 
-module.exports = app
+app.use("/api", appRouter);
+module.exports = app;
