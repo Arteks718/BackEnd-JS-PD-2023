@@ -5,7 +5,10 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Classes extends Model {
     static associate(models) {
-      Classes.hasMany(models.topic)
+      Classes.hasMany(models.Topic,{
+        onDelete: 'RESTRICT',
+        onUpdate: 'CASCADE'
+      })
       // define association here
     }
   }

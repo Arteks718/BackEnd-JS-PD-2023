@@ -2,7 +2,7 @@
   "development": {
     "username": "postgres",
     "password": "postgres",
-    "database": "phones",
+    "database": "class",
     "host": "localhost",
     "dialect": "postgres"
   },

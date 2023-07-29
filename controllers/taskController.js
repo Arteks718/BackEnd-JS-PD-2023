@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const { Task } = require('../db/models')
 
-module.exports.tasksController = {
+module.exports = {
   getAllTask:async (req, res) => {
     try {
       const foundTasks = await Task.findAll({

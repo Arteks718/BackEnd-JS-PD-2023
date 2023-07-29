@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { usersController } = require("../controllers/index.js");
-const { validate, paginate } = require("../middleware");
+const { validate, paginate } = require("../middleware/index.js");
 
 const usersRouter = Router();
 
