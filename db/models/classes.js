@@ -7,7 +7,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Classes.hasMany(models.Topic,{
         onDelete: 'RESTRICT',
-        onUpdate: 'CASCADE'
+        onUpdate: 'CASCADE',
+        foreignKey:{ 
+          name: 'class_id',
+          allowNull: false
+        }
       })
       // define association here
     }

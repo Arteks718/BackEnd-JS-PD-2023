@@ -16,8 +16,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: {
           model: 'classes',
-          id: 'id'
+          id: 'id',
         },
+        onDelete: 'RESTRICT',
+        onUpdate: 'CASCADE',
         allowNull: false
       },
       created_at: {
