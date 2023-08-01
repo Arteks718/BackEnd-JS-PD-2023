@@ -1,13 +1,26 @@
-const { USER_VALIDATION_SCHEMA } = require("../utils/validationsSchemas.js");
+const createHttpError = require("http-errors");
+const { NEW_USER_VALIDATION_SCHEMA, UPDATED_USER_VALIDATION_SCHEMA } = require("../utils/validationsSchemas.js");
 
-module.exports.userValidation = async (req, res, next) => {
+module.exports.validateUserOnCreate = async (req, res, next) => {
   try {
-    const validateUser = await USER_VALIDATION_SCHEMA.validate(req.body);
-    // req.setHeader('Content-Type', 'application/json');
+    const validateUser = await NEW_USER_VALIDATION_SCHEMA.validate(req.body);
     req.body = validateUser
     next()
   } catch (error) {
-    res.status(422).send({error: error.errors})
-    console.log("error", error);
+    // res.status(422).send({error: error.errors})
+    // console.log("error", error);
+    next(createHttpError(422, error.errors[0]))
+  }
+};
+
+module.exports.validateUserOnUpdate = async (req, res, next) => {
+  try {
+    const validateUser = await UPDATED_USER_VALIDATION_SCHEMA.validate(req.body);
+    req.body = validateUser
+    next()
+  } catch (error) {
+    // res.status(422).send({error: error.errors})
+    // console.log("error", error);
+    next(createHttpError(422, error.errors[0]))
   }
 };

@@ -7,12 +7,12 @@ const usersRouter = Router();
 usersRouter
   .route("/")
   .get(paginate.paginateUser, usersController.getUsers)
-  .post(validate.userValidation, usersController.createUser);
+  .post(validate.validateUserOnCreate, usersController.createUser);
 
 usersRouter
   .route("/:userId")
   .get(usersController.getUserById)
-  .patch(usersController.updateUserById)
+  .patch(validate.validateUserOnUpdate, usersController.updateUserById)
   .delete(usersController.deleteUserById);
 
 module.exports = usersRouter;
