@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'RESTRICT',
         onUpdate: 'CASCADE',
         foreignKey:{ 
-          name: 'class_id',
+          name: 'classId',
           allowNull: false
         }
       })
