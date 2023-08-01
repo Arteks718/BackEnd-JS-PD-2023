@@ -1,7 +1,7 @@
 const createHttpError = require('http-errors');
 const { ValidationError, BaseError } = require('sequelize')
 
-module.exports.dbErrorHandler = (err, res, req, next) => {
+module.exports.dbErrorHandler = (err, req, res, next) => {
   if(err instanceof ValidationError) {
     return res.status(422).send(err.errors);
   }
@@ -12,7 +12,7 @@ module.exports.dbErrorHandler = (err, res, req, next) => {
 }
 
 
-module.exports.errorHandler = (err, req, res, next) => {
+module.exports.errorHandler = (err, rse, res, next) => {
   if(res.headerSet) {
     return
   }
