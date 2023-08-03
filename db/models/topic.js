@@ -1,21 +1,29 @@
-'use strict';
+'use strict'
 const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Topic extends Model {
     static associate(models) {
-      Topic.belongsTo(models.Classes, {
-        foreignKey: 'classId'
+      Topic.hasMany(models.Task, {
+        foreignKey: {
+          name: 'topicId',
+          allowNull: false,
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       })
     }
   }
   Topic.init({
-    caption: DataTypes.STRING,
+    caption: { 
+      type: DataTypes.STRING,
+      allowNull: false,
+    }
   }, {
     sequelize,
-    modelName: 'Topic',
     underscored: true,
+    modelName: 'Topic',
   });
   return Topic;
 };

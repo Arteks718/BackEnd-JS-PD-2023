@@ -2,27 +2,16 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('tasks', {
+    await queryInterface.createTable('topics', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      body: {
+      caption: {
         type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-          not: /^\s+$/,
-          len: [4, 500]
-        }
-      },
-      is_done: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
-      },
-      deadline: {
-        type: Sequelize.DATE
+        allowNull: false
       },
       created_at: {
         allowNull: false,
@@ -35,6 +24,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('tasks');
+    await queryInterface.dropTable('topics');
   }
 };
