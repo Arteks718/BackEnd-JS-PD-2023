@@ -8,5 +8,4 @@ topicRouter
   .get()
   .post(topicController.createTopic);
 
-topicRouter.get('/:topicId/tasks', topicController.getTopicTasks)
 module.exports = topicRouter;

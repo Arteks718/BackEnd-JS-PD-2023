@@ -2,7 +2,7 @@ POST http://localhost:5000/api/task HTTP/1.1
 Content-Type: application/json
 
 {
-  "body": "Repeat HTML",
+  "body": "Lea",
   "isDone": false,
   "topicId": 1,
   "deadline": "10-08-2023"
