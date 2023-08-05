@@ -1,1 +1,1 @@
-module.exports.errorHandlers = require('./errorHandlers')
+module.exports.errorHandler = require('./errorHandler')

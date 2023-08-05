@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const httpClient = axios.create({baseURL: 'http://localhost:5000/api/'})
+const httpClient = axios.create({ baseURL: "http://localhost:5000/api/" });
 
 const initialState = {
   heroes: [],
@@ -13,12 +13,10 @@ export const getHeroesThunk = createAsyncThunk(
   "heroes/get",
   async (payload) => {
     try {
-      console.log('getHeroesThunk')
-      const gettingData = await httpClient.get('/heroes')
-      console.log('gettingData', gettingData)
-    } catch (error) {
-      
-    }
+      console.log("getHeroesThunk");
+      const gettingData = await httpClient.get('/heroes');
+      console.log("gettingData", gettingData);
+    } catch (error) {}
   }
 );
 

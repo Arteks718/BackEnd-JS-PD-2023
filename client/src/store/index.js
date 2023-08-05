@@ -6,5 +6,5 @@ const reducer = {
 }
 
 const store = configureStore({reducer})
-console.log(store)
+
 export default store
