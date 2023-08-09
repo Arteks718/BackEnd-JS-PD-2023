@@ -1,10 +1,13 @@
 const multer = require("multer");
 const createHttpError = require("http-errors")
+const path = require("path");
+const { STATIC_FOLDER,IMAGES_FOLDER } = require('../constants')
+
 
 const storage = multer.diskStorage({
   // save path
   destination: (req, file, cb) => {
-    cb(null, "public/images/");
+    cb(null, path.join(STATIC_FOLDER, IMAGES_FOLDER));
   },
   // new file name
   filename: (req, file, cb) => {
