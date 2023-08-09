@@ -1,4 +1,5 @@
 const multer = require("multer");
+const createHttpError = require("http-errors")
 
 const storage = multer.diskStorage({
   // save path
@@ -14,10 +15,11 @@ const storage = multer.diskStorage({
 const fileFilter = (req, file, cb) => {
   const MIMETYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
 
-  cb(
-    null,
-    MIMETYPES.some((mimetype) => mimetype === file.mimetype)
-  );
+  if(MIMETYPES.some((mimetype) => mimetype === file.mimetype)) {
+    return cb(null, true);
+  }
+
+  cb(createHttpError(415, "Wrong file type. Support only png/webp/gif/jpeg files"));
 };
 
 const upload = multer({ storage, fileFilter });
