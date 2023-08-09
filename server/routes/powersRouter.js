@@ -3,6 +3,9 @@ const {powersController} = require("../controllers");
 
 const powersRouter = Router()
 
-powersRouter.get('/', powersController.getPowers)
+powersRouter
+  .route('/')
+  .get(powersController.getPowers)
+  .post(powersController.createPower)
 
 module.exports = powersRouter

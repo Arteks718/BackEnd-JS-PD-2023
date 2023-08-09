@@ -1,21 +1,27 @@
+const createHttpError = require("http-errors");
+const path = require("path");
 const { Hero } = require("../db/models");
 
 module.exports = {
   createHero: async (req, res, next) => {
-    const { body } = req;
+    const { body, file } = req;
+    if(file) {
+      body.image = path.join('images', file.filename)
+    }
     try {
-      const newHero = await Hero.create(body)
-      if(!newHero) {
-        return res.status(400).send(`Hero creation failed`)
+      const newHero = await Hero.create(body);
+      if (!newHero) {
+        return next(createHttpError(500, "Server error"));
       }
-      res.status(201).send(newHero)
+      res.status(201).send({ data: newHero });
     } catch (error) {
-      next(error)
+      next(error);
     }
   },
   getHeroes: async (req, res, next) => {
     try {
-      const heroes = await Hero.findAll({ order: ['id'],
+      const heroes = await Hero.findAll({
+        order: ["id"],
         raw: true,
         attributes: {
           exclude: ["createdAt", "updatedAt"],
@@ -24,12 +30,15 @@ module.exports = {
       res.status(200).send({ data: heroes });
     } catch (error) {
       // console.log(error);
-      next(error)
+      next(error);
     }
   },
   getHeroById: async (req, res, next) => {},
   updateHeroById: async (req, res, next) => {
-    const { body, params: { heroId } } = req;
+    const {
+      body,
+      params: { heroId },
+    } = req;
 
     try {
       const [updatedHeroCount, [updatedHero]] = await Hero.update(body, {
@@ -49,19 +58,21 @@ module.exports = {
     }
   },
   deleteHeroById: async (req, res, next) => {
-    const { params: { heroId } } = req;
-  
+    const {
+      params: { heroId },
+    } = req;
+
     try {
       const deletedHeroCount = await Hero.destroy({
         where: {
           id: heroId,
         },
       });
-  
+
       if (!deletedHeroCount) {
-        return next(createError(404, 'Hero Not Found'));
+        return next(createError(404, "Hero Not Found"));
       }
-      res.status(204).send('Hero deleted successfully');
+      res.status(204).send("Hero deleted successfully");
     } catch (err) {
       next(err);
     }
