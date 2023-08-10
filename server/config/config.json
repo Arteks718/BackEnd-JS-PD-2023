@@ -2,14 +2,10 @@
   "development": {
     "username": "postgres",
     "password": "postgres",
-    "database": "homework_assosiations",
+    "database": "class",
     "host": "localhost",
     "dialect": "postgres"
   },
-  "test": {
-
-  },
-  "production": {
-
-  }
+  "test": {},
+  "production": {}
 }

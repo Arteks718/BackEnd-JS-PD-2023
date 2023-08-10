@@ -1,0 +1,1 @@
+GET http://localhost:5000/api/classes/1/topics HTTP/1.1
