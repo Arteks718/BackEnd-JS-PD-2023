@@ -1,35 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './App.css';
+import React, { useEffect } from "react";
+import "./App.css";
+import { connect } from "react-redux";
+import { getUsersThunk } from "./store/slices/usersSlice";
 
-const httpClient = axios.create({baseURL: 'http://localhost:5000/api'})
+type TypeApp = {
+  users: string[];
+  isFetching: boolean;
+  error: string | null | undefined | unknown;
+  getUsers: any
+};
 
-function App() {
-  const [users, setUsers] = useState([{ firstName: 'Test' }])
-  const [isFetching, setIsFetching] = useState(false)
-  const [error, setError] = useState(null)
-
+function App({ users, isFetching, error, getUsers }: TypeApp) {
   useEffect(() => {
-    setIsFetching(true)
-    httpClient.get('/users')
-      .then(({data} )=> {
-        setUsers(data)
-      })
-      .catch(error => {
-        setError(error)
-      })
-      .finally(() => setIsFetching(false))
-  },[])
+    getUsers()
+  }, []);
 
   return (
     <>
       {error && <div>Error!</div>}
       {isFetching && <div>Loading...</div>}
       <ul>
-        Users: { users.map(user => (<li>{ JSON.stringify(user)}</li>))}
+        Users:{" "}
+        {users.map((user, index) => (
+          <li key={index}>{JSON.stringify(user)}</li>
+        ))}
       </ul>
     </>
   );
 }
 
-export default App;
+type TypeMapStateToProps = (state: any) => string[];
+type TypeMapDispatchToProps = (dispatch: any) => void;
+
+const mapStateToProps: TypeMapStateToProps = (state) => state.usersData;
+const mapDispatchToProps: TypeMapDispatchToProps = (dispatch) => ({
+  getUsers: () => {
+    dispatch(getUsersThunk());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
