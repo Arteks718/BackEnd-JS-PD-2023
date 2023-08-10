@@ -1,0 +1,15 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "homework_assosiations",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+
+  },
+  "production": {
+
+  }
+}
