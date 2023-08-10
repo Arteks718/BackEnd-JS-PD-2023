@@ -12,7 +12,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App users={[]} isFetching={false} error={undefined} getUsers={undefined} />
+      <App users={[]} isFetching={false} error={undefined} />
     </Provider>
   </React.StrictMode>
 );

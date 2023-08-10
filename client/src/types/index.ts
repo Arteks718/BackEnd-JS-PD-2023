@@ -17,7 +17,7 @@ type TypeUser = {
 }
 
 interface IUsersState {
-  users: string[];
+  users: TypeUser[];
   isFetching: boolean;
   error: string | null | undefined | unknown;
 }

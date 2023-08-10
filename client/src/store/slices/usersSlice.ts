@@ -1,13 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { IUsersState } from '../../types'
 
 const httpClient = axios.create({baseURL: 'http://localhost:5000/api'})
-
-interface IUsersState {
-  users: string[];
-  isFetching: boolean;
-  error: string | null | undefined | unknown;
-}
 
 export const getUsersThunk = createAsyncThunk("users/get", 
   async (payload, { rejectWithValue }) => {
@@ -21,6 +16,18 @@ export const getUsersThunk = createAsyncThunk("users/get",
   }
 );
 
+export const deleteUsersThunk = createAsyncThunk("users/delete",
+  async (userId:number, { rejectWithValue }) => {
+    try {
+      await httpClient.delete(`/users/${userId}`)
+      return userId
+    } catch (error) {
+      console.log('error =>', error)
+      return rejectWithValue({message: error})
+    }
+  }
+)
+
 const initialState: IUsersState = {
   users: [],
   isFetching: false,
@@ -32,6 +39,7 @@ const usersSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    // GET
     builder
       .addCase(getUsersThunk.pending, (state,) => {
         state.isFetching = true
@@ -45,7 +53,21 @@ const usersSlice = createSlice({
         state.isFetching = false
         state.error = payload
       })
-
+    // DELETE
+    builder
+      .addCase(deleteUsersThunk.pending, (state) => {
+        state.isFetching = true
+        state.error = null
+      })
+      .addCase(deleteUsersThunk.fulfilled, (state, {payload}) => {
+        state.isFetching = false
+        const deleteUsersIndex = state.users.findIndex(user => user.id === Number(payload))
+        state.users.splice(deleteUsersIndex, 1)
+      })
+      .addCase(deleteUsersThunk.rejected, (state, {payload}) => {
+        state.isFetching = false
+        state.error = payload
+      })
   },
 });
 
