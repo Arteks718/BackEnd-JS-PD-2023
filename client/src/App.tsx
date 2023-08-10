@@ -8,14 +8,14 @@ function App({ users, isFetching, error, getUsers, deleteUsers}: TypeApp) {
   useEffect(() => {
     getUsers();
   }, []);
-
+  
+  console.log(users)
   return (
     <>
       {error && <div>Error!</div>}
       {isFetching && <div>Loading...</div>}
       <ul>
         Users:{" "}
-        
         {users.map((user, index) => (
           <li key={user.id}>
             {JSON.stringify(user)}

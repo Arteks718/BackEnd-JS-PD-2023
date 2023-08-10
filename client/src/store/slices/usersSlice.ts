@@ -1,13 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import { IUsersState } from '../../types'
+import { deleteHttpUsers, getHttpUsers } from "../../api";
 
-const httpClient = axios.create({baseURL: 'http://localhost:5000/api'})
 
 export const getUsersThunk = createAsyncThunk("users/get", 
   async (payload, { rejectWithValue }) => {
     try {
-      const {data} = await httpClient.get('/users')
+      const {data}:any = await getHttpUsers()
       return data // => action.payload
     } catch (error) {
       console.log('error =>', error)
@@ -19,7 +18,7 @@ export const getUsersThunk = createAsyncThunk("users/get",
 export const deleteUsersThunk = createAsyncThunk("users/delete",
   async (userId:number, { rejectWithValue }) => {
     try {
-      await httpClient.delete(`/users/${userId}`)
+      await deleteHttpUsers(userId)
       return userId
     } catch (error) {
       console.log('error =>', error)

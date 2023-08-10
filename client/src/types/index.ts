@@ -26,4 +26,4 @@ enum EnumGender {
   male, female, other
 }
 
-export type { IUsersState, TypeApp }
+export type { IUsersState, TypeApp, TypeUser }
