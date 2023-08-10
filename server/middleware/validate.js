@@ -1,12 +1,26 @@
-const { CREATE_NEW_TASK } = require('../utils/validationSchema.js')
-const createHttpError = require('http-errors')
+const createHttpError = require("http-errors");
+const { NEW_USER_VALIDATION_SCHEMA, UPDATED_USER_VALIDATION_SCHEMA } = require("../utils/validationsSchemas.js");
 
-module.exports.validateTaskOnCreate = async (req, res, next) => {
+module.exports.validateUserOnCreate = async (req, res, next) => {
   try {
-    const validateNewTask = await CREATE_NEW_TASK.validate(req.body)
-    req.body = validateNewTask
+    const validateUser = await NEW_USER_VALIDATION_SCHEMA.validate(req.body);
+    req.body = validateUser
     next()
   } catch (error) {
-    next(createHttpError(422, error.message))
+    // res.status(422).send({error: error.errors})
+    // console.log("error", error);
+    next(createHttpError(422, error.errors[0]))
   }
-}
+};
+
+module.exports.validateUserOnUpdate = async (req, res, next) => {
+  try {
+    const validateUser = await UPDATED_USER_VALIDATION_SCHEMA.validate(req.body);
+    req.body = validateUser
+    next()
+  } catch (error) {
+    // res.status(422).send({error: error.errors})
+    // console.log("error", error);
+    next(createHttpError(422, error.errors[0]))
+  }
+};

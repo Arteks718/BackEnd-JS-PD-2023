@@ -1,10 +1,17 @@
-const express = require('express');
-const appRouter = require('./router');
-const { errorHandlers } = require('./middleware');
+const appRouter = require("./router/index.js");
+const express = require("express");
+const { errorHandlers } = require('./middleware')
+
 const app = express();
+app.use(express.json());
 
-app.use(express.json())
-app.use('/api', appRouter)
-app.use(errorHandlers.errorHandler)
+app.get("/test", (req, res, next) => {
+  console.log(new Date())
+  next()
+}, (req, res) => {
+  res.send(req.query);
+});
 
-module.exports = app
+app.use("/api", appRouter);
+app.use(errorHandlers.dbErrorHandler, errorHandlers.errorHandler)
+module.exports = app;
