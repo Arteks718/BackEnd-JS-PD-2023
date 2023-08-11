@@ -1,43 +1,21 @@
 import React, { useEffect } from "react";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import "./App.css";
-import { connect } from "react-redux";
-import { getUsersThunk, deleteUsersThunk } from "./store/slices/usersSlice";
-import { TypeApp } from "./types"
+import Users from "./components/Users";
+import ErrorPage from "./ErrorPage";
+import Tasks from "./components/Tasks";
 
-function App({ users, isFetching, error, getUsers, deleteUsers}: TypeApp) {
-  useEffect(() => {
-    getUsers();
-  }, []);
-  
-  console.log(users)
+function App() {
   return (
-    <>
-      {error && <div>Error!</div>}
-      {isFetching && <div>Loading...</div>}
-      <ul>
-        Users:{" "}
-        {users.map((user, index) => (
-          <li key={user.id}>
-            {JSON.stringify(user)}
-            <button onClick={() => {deleteUsers(user.id)}}>Delete</button>
-          </li>
-        ))
-        }
-      </ul>
-    </>
-  );
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<div>Hello world!</div>} />
+        <Route path="/users" element={<Users users={[]} isFetching={false} error={undefined} />} />
+        <Route path="/tasks" element={<Tasks tasks={[]} isFetching={false} error={undefined}/>} />
+        <Route path="*" element={ <ErrorPage /> } />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
-type TypeMapStateToProps = (state: any) => string[];
-type TypeMapDispatchToProps = (dispatch: any) => ({
-  getUsers: () => void,
-  deleteUsers: (userId: number) => void
-});
-
-const mapStateToProps: TypeMapStateToProps = (state) => state.usersData;
-const mapDispatchToProps: TypeMapDispatchToProps = (dispatch) => ({
-  getUsers: () => dispatch(getUsersThunk()),
-  deleteUsers: (userId) => dispatch(deleteUsersThunk(userId)), // => payload
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

@@ -1,9 +1,16 @@
-type TypeApp = {
+type TypeUsersApp = {
   users: TypeUser[];
   isFetching: boolean;
   error: string | null | undefined | unknown;
   getUsers: any;
   deleteUsers: any;
+};
+
+type TypeTasksApp = {
+  tasks: TypeTask[];
+  isFetching: boolean;
+  error: string | null | undefined | unknown;
+  getTasks: any;
 };
 
 type TypeUser = {
@@ -14,7 +21,14 @@ type TypeUser = {
   passwordHash: string;
   birthday?: string;
   gender?: EnumGender;
-}
+};
+
+type TypeTask = {
+  id:number;
+  body: string;
+  isDone: boolean;
+  deadline: string;
+};
 
 interface IUsersState {
   users: TypeUser[];
@@ -22,8 +36,16 @@ interface IUsersState {
   error: string | null | undefined | unknown;
 }
 
-enum EnumGender {
-  male, female, other
+interface ITasksState {
+  tasks: TypeTask[];
+  isFetching: boolean;
+  error: string | null | undefined | unknown;
 }
 
-export type { IUsersState, TypeApp, TypeUser }
+enum EnumGender {
+  male,
+  female,
+  other,
+}
+
+export type { IUsersState, ITasksState, TypeUsersApp, TypeTasksApp, TypeUser };
