@@ -22,7 +22,6 @@ export const deleteUsersThunk = createAsyncThunk(
       await deleteHttpUsers(userId);
       return userId;
     } catch (error) {
-      console.log("error =>", error);
       return rejectWithValue({ message: error });
     }
   }

@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 type TypeUsersApp = {
   users: TypeUser[];
   isFetching: boolean;
@@ -9,8 +11,9 @@ type TypeUsersApp = {
 type TypeTasksApp = {
   tasks: TypeTask[];
   isFetching: boolean;
-  error: string | null | undefined | unknown;
+  error: string | null | undefined;
   getTasks: any;
+  deleteTask: any
 };
 
 type TypeUser = {
@@ -27,7 +30,9 @@ type TypeTask = {
   id:number;
   body: string;
   isDone: boolean;
-  deadline: string;
+  deadline: Date;
+  createdAt?: any;
+  updatedAt?: Date;
 };
 
 interface IUsersState {

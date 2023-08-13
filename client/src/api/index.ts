@@ -5,3 +5,4 @@ export const getHttpUsers = () => httpClient.get('/users')
 export const deleteHttpUsers = (userId:number) => httpClient.delete(`/users/${userId}`)
 
 export const getHttpTasks = () => httpClient.get('/tasks')
+export const deleteHttpTask = (taskId:number) => httpClient.delete(`/tasks/${taskId}`)
