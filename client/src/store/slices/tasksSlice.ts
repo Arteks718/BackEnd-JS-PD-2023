@@ -21,6 +21,7 @@ export const addNewTaskThunk = createAsyncThunk(
   async(payload, { rejectWithValue }) => {
     try {
       // await createHttpTask(payload)
+      // console.log(data)
       console.log("asdadasd")
     } catch (error) {
       const { message }: any = error;
@@ -103,6 +104,7 @@ const tasksSlice = createSlice({
         state.error = null;
       })
       .addCase(addNewTaskThunk.fulfilled, (state, { payload }) => {
+        state.isFetching = false
         console.log("asdasdasdasdas")
       })
       .addCase(addNewTaskThunk.rejected, (state, {payload}) => {

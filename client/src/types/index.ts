@@ -17,6 +17,7 @@ type TypeTasksApp = {
   getTasks: any;
   deleteTask: any;
   isNewTask: any;
+  createTask: any
 };
 
 type TypeUser = {
@@ -30,7 +31,7 @@ type TypeUser = {
 };
 
 type TypeTask = {
-  id:number;
+  id?:number;
   body: string;
   isDone: boolean;
   deadline: Date;
@@ -58,4 +59,4 @@ enum EnumGender {
   other,
 }
 
-export type { IUsersState, ITasksState, TypeUsersApp, TypeTasksApp, TypeUser };
+export type { IUsersState, ITasksState, TypeUsersApp, TypeTasksApp, TypeUser, TypeTask };

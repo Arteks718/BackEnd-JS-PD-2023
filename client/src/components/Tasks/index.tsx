@@ -4,8 +4,9 @@ import {
   getTasksThunk,
   deleteTaskThunk,
   isOpenNewTaskWindow,
+  addNewTaskThunk
 } from "../../store/slices/tasksSlice";
-import AddNewTaskForm from "./AddNewTaskForm.tsx";
+import CreateTaskForm from "./AddNewTaskForm.tsx";
 import { TypeTasksApp } from "../../types";
 import styled from "./Tasks.module.sass";
 
@@ -18,9 +19,11 @@ function Tasks({
   getTasks,
   deleteTask,
   isNewTask,
+  createTask
 }: TypeTasksApp) {
   useEffect(() => {
     getTasks();
+    // createTask()
   }, []);
   return (
     <div className={styled.container}>
@@ -60,7 +63,7 @@ function Tasks({
         <button onClick={isNewTask}>CREATE NEW TASK</button>
         {isOpenNewTask && (
           <div className={styled.newTaskBlock}>
-            <AddNewTaskForm />
+            <CreateTaskForm />
           </div>
         )}
       </div>
@@ -73,6 +76,7 @@ type TypeMapDispatchToProps = (dispatch: any) => {
   getTasks: () => void;
   deleteTask: (taskId: number) => void;
   isNewTask: () => boolean;
+  createTask: () => void
 };
 
 const mapStateToProps: TypeMapStateToProps = (state) => state.tasksData;
@@ -80,6 +84,7 @@ const mapDispatchToProps: TypeMapDispatchToProps = (dispatch) => ({
   getTasks: () => dispatch(getTasksThunk()),
   deleteTask: (taskId) => dispatch(deleteTaskThunk(taskId)),
   isNewTask: () => dispatch(isOpenNewTaskWindow()),
+  createTask: () => dispatch(addNewTaskThunk())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tasks);
