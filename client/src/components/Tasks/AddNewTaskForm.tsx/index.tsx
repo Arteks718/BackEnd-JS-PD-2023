@@ -2,9 +2,7 @@ import React, { useEffect } from "react";
 import { Formik, Field, Form } from "formik";
 import * as yup from "yup";
 import { connect } from "react-redux";
-import {
-  addNewTaskThunk,
-} from "../../../store/slices/tasksSlice";
+import { createTaskThunk } from "../../../store/slices/tasksSlice";
 import { TypeTask } from "../../../types";
 
 const TaskFormSchema = yup.object().shape({
@@ -17,14 +15,15 @@ const TaskFormSchema = yup.object().shape({
   deadline: yup.date().min(new Date()),
 });
 
-function CreateTaskForm(createTask: any) {
-  useEffect(() => {
-    createTask()
-  }, [])
+type TypeCreateTaskForm = {
+  createTask: any;
+};
+
+function CreateTaskForm({ createTask }: TypeCreateTaskForm) {
   const handleSubmit = (values: TypeTask, formikBag?: any) => {
-    console.log(values)
-    formikBag.resetForm()
-  }
+    createTask(values);
+    formikBag.resetForm();
+  };
   return (
     <div>
       <Formik
@@ -62,14 +61,14 @@ function CreateTaskForm(createTask: any) {
   );
 }
 
-type TypeMapStateToProps = (state: any) => string[]
+type TypeMapStateToProps = (state: any) => string[];
 type TypeMapDispatchToProps = (dispatch: any) => {
-  createTask: () => void
+  createTask: (task: TypeTask) => void;
 };
 
 const mapStateToProps: TypeMapStateToProps = (state) => state.tasksData;
 const mapDispatchToProps: TypeMapDispatchToProps = (dispatch: any) => ({
-  createTask: () => dispatch(addNewTaskThunk()),
+  createTask: (task) => dispatch(createTaskThunk(task)),
   // isNewTask: () => dispatch(isOpenNewTaskWindow())
 });
 

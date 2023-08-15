@@ -1,6 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getHttpTasks, deleteHttpTask } from "../../api";
-import { ITasksState } from "../../types";
+import { getHttpTasks, deleteHttpTask, createHttpTask } from "../../api";
+import { ITasksState, TypeTask } from "../../types";
+
+export const createTaskThunk = createAsyncThunk(
+  "tasks/post",
+  async(task:any, { rejectWithValue }) => {
+    try {
+      const createdUser = await createHttpTask(task)
+      return createdUser
+    } catch (error) {
+      const { message }: any = error;
+      console.log("error =>", message);
+      return rejectWithValue(message);
+    }
+  }
+)
 
 export const getTasksThunk = createAsyncThunk(
   "tasks/get",
@@ -15,21 +29,6 @@ export const getTasksThunk = createAsyncThunk(
     }
   }
 );
-
-export const addNewTaskThunk = createAsyncThunk(
-  "tasks/post",
-  async(payload, { rejectWithValue }) => {
-    try {
-      // await createHttpTask(payload)
-      // console.log(data)
-      console.log("asdadasd")
-    } catch (error) {
-      const { message }: any = error;
-      console.log("error =>", message);
-      return rejectWithValue(message);
-    }
-  }
-)
 
 export const deleteTaskThunk = createAsyncThunk(
   "tasks/delete",
@@ -99,15 +98,15 @@ const tasksSlice = createSlice({
         state.error = payload
       });
     builder
-      .addCase(addNewTaskThunk.pending, (state) => {
+      .addCase(createTaskThunk.pending, (state) => {
         state.isFetching = true;
         state.error = null;
       })
-      .addCase(addNewTaskThunk.fulfilled, (state, { payload }) => {
+      .addCase(createTaskThunk.fulfilled, (state, { payload }: any) => {
         state.isFetching = false
-        console.log("asdasdasdasdas")
+        state.tasks.push(payload.data)
       })
-      .addCase(addNewTaskThunk.rejected, (state, {payload}) => {
+      .addCase(createTaskThunk.rejected, (state, {payload}) => {
         state.isFetching = false;
         state.error = payload;
       })

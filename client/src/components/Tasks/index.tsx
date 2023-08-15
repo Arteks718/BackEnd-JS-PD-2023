@@ -3,8 +3,7 @@ import { connect } from "react-redux";
 import {
   getTasksThunk,
   deleteTaskThunk,
-  isOpenNewTaskWindow,
-  addNewTaskThunk
+  isOpenNewTaskWindow
 } from "../../store/slices/tasksSlice";
 import CreateTaskForm from "./AddNewTaskForm.tsx";
 import { TypeTasksApp } from "../../types";
@@ -18,8 +17,7 @@ function Tasks({
   isOpenNewTask,
   getTasks,
   deleteTask,
-  isNewTask,
-  createTask
+  isNewTask
 }: TypeTasksApp) {
   useEffect(() => {
     getTasks();
@@ -76,7 +74,6 @@ type TypeMapDispatchToProps = (dispatch: any) => {
   getTasks: () => void;
   deleteTask: (taskId: number) => void;
   isNewTask: () => boolean;
-  createTask: () => void
 };
 
 const mapStateToProps: TypeMapStateToProps = (state) => state.tasksData;
@@ -84,7 +81,6 @@ const mapDispatchToProps: TypeMapDispatchToProps = (dispatch) => ({
   getTasks: () => dispatch(getTasksThunk()),
   deleteTask: (taskId) => dispatch(deleteTaskThunk(taskId)),
   isNewTask: () => dispatch(isOpenNewTaskWindow()),
-  createTask: () => dispatch(addNewTaskThunk())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tasks);

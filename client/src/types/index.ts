@@ -17,7 +17,6 @@ type TypeTasksApp = {
   getTasks: any;
   deleteTask: any;
   isNewTask: any;
-  createTask: any
 };
 
 type TypeUser = {
