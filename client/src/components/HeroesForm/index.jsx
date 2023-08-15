@@ -1,7 +1,9 @@
 import React from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import { connect } from "react-redux";
+import { createHeroThunk } from "../../store/slices/heroesSlice";
 
-function HeroForm() {
+function HeroForm({createHero}) {
   const initialValues = {
     nickname: "",
     realName: "",
@@ -10,32 +12,38 @@ function HeroForm() {
     isGood: true,
   };
 
+  const handleSubmit = (values, formikBag) => {
+    createHero(values)
+    console.log(values)
+    formikBag.resetForm()
+  };
+
   return (
-    <Formik initialValues={initialValues} onSubmit={() => {}}>
+    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
       <Form>
-        <label htmlFor="nickname">
+        <label>
           <span>Nickname:</span>
-          <Field type="text" name="nickname" placeholder="Superman"/>
+          <Field type="text" name="nickname" placeholder="Superman" />
         </label>
         <br />
-        <label htmlFor="realName">
+        <label>
           <span>Real name:</span>
-          <Field type="text" name="realName" placeholder="Klark Kent"/>
+          <Field type="text" name="realName" placeholder="Klark Kent" />
         </label>
         <br />
-        <label htmlFor="originDescription">
+        <label>
           <span>Origin Description:</span>
-          <Field type="text" name="originDescription" placeholder="Krypton"/>
+          <Field type="text" name="originDescription" placeholder="Krypton" />
         </label>
         <br />
-        <label htmlFor="catchPhrase">
+        <label>
           <span>Catch Phrase:</span>
-          <Field type="text" name="catchPhrase" placeholder="I'm superman"/>
+          <Field type="text" name="catchPhrase" placeholder="I'm superman" />
         </label>
         <br />
-        <label htmlFor="nickname">
+        <label>
           <span>Is hero positive:</span>
-          <Field type="checkbox" name="isDone"/>
+          <Field type="checkbox" name="isGood" />
         </label>
         <br />
         <button type="submit">CREATE</button>
@@ -44,4 +52,9 @@ function HeroForm() {
   );
 }
 
-export default HeroForm;
+const mapStateToProps = ({ heroData }) => heroData;
+const mapDispatchToProps = (dispatch) => ({
+  createHero: (data) => dispatch(createHeroThunk(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeroForm);

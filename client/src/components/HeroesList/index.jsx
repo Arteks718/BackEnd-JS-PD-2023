@@ -15,13 +15,12 @@ function HeroesList({ heroes, isFetching, error, getHeroes, deleteHero, updateHe
       (
         <li key={hero.id}>
           <h2>{hero.id}</h2>
-          <h2>{hero.nickname}</h2>
-          <div>{hero.realName}</div>
-          {/* <h2>{hero.}</h2> */}
+          <span>{hero.nickname}</span>
+          <span>{hero.realName}</span>
           <div>{hero.catchPhrase}</div>
           <div>isGood <input type="checkbox" checked={hero.isGood} onChange={() => {
             updateHero(hero.id, { isGood: !hero.isGood})
-          }}></input></div>
+          }} /></div>
           <button onClick={() => deleteHero(hero.id)}>Delete</button>
         </li>
       )
