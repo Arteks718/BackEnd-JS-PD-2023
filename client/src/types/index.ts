@@ -12,8 +12,11 @@ type TypeTasksApp = {
   tasks: TypeTask[];
   isFetching: boolean;
   error: string | null | undefined;
+  isEmpty: boolean;
+  isOpenNewTask: boolean;
   getTasks: any;
-  deleteTask: any
+  deleteTask: any;
+  isNewTask: any;
 };
 
 type TypeUser = {
@@ -45,6 +48,8 @@ interface ITasksState {
   tasks: TypeTask[];
   isFetching: boolean;
   error: string | null | undefined | unknown;
+  isEmpty: boolean;
+  isOpenNewTask: boolean;
 }
 
 enum EnumGender {
