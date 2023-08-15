@@ -6,8 +6,8 @@ import HeroesList from '../../components/HeroesList'
 function HeroesPage() {
   return (
     <>
-      <HeroesList></HeroesList>
       <HeroesForm></HeroesForm>
+      <HeroesList></HeroesList>
     </>
   )
 }
