@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import {
   getTasksThunk,
   deleteTaskThunk,
-  isOpenNewTaskWindow
+  isOpenNewTaskWindow,
 } from "../../store/slices/tasksSlice";
-import CreateTaskForm from "./AddNewTaskForm.tsx";
+import CreateTaskForm from "./AddNewTaskForm";
 import { TypeTasksApp } from "../../types";
 import styled from "./Tasks.module.sass";
 
@@ -17,7 +17,7 @@ function Tasks({
   isOpenNewTask,
   getTasks,
   deleteTask,
-  isNewTask
+  isNewTask,
 }: TypeTasksApp) {
   useEffect(() => {
     getTasks();
@@ -46,7 +46,11 @@ function Tasks({
               <td>{task.id}</td>
               <td>{task.body}</td>
               <td>
-                <input type="checkbox" checked={task.isDone} />
+                <input
+                  type="checkbox"
+                  checked={task.isDone}
+                  onChange={() => {}}
+                />
               </td>
               <td>{new Date(task.deadline).toLocaleString("uk-UA")}</td>
               <td>{new Date(task.createdAt).toLocaleString("uk-UA")}</td>
@@ -58,7 +62,9 @@ function Tasks({
         ))}
       </table>
       <div className={styled.newTask}>
-        <button onClick={isNewTask}>CREATE NEW TASK</button>
+        <button onClick={isNewTask} className={styled.createNewTaskButton}>
+          CREATE NEW TASK
+        </button>
         {isOpenNewTask && (
           <div className={styled.newTaskBlock}>
             <CreateTaskForm />
