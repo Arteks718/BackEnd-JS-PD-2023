@@ -1,3 +1,7 @@
+#root{
+  height: 100vh;
+  padding-top: 100px;
+}
 /* Указываем box sizing */
 *,
 *::before,
@@ -76,3 +80,4 @@ select {
     scroll-behavior: auto !important;
   }
 }
+
