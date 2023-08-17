@@ -18,7 +18,7 @@ function App() {
           />
           <Route
             path="/tasks"
-            element={<Tasks tasks={[]} isFetching={false} error={undefined} isEmpty={false} isOpenNewTask={false} />}
+            element={<Tasks tasks={[]} isFetching={false} error={undefined} isEmpty={false} isOpenNewTask={false} isOpenUpdateTask={false} />}
           />
           <Route path="*" element={<ErrorPage />} />
         </Routes>

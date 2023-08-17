@@ -1,5 +1,3 @@
-import { ReactNode } from "react";
-
 type TypeUsersApp = {
   users: TypeUser[];
   isFetching: boolean;
@@ -8,15 +6,18 @@ type TypeUsersApp = {
   deleteUsers: any;
 };
 
-type TypeTasksApp = {
+interface ITasksApp {
   tasks: TypeTask[];
   isFetching: boolean;
   error: string | null | undefined;
   isEmpty: boolean;
   isOpenNewTask: boolean;
+  isOpenUpdateTask: boolean;
   getTasks: any;
   deleteTask: any;
   isNewTask: any;
+  isUpdateTask: any;
+  updateShowTask: any;
 };
 
 type TypeUser = {
@@ -33,10 +34,12 @@ type TypeTask = {
   id?:number;
   body: string;
   isDone: boolean;
-  deadline: Date;
+  deadline: string;
   createdAt?: any;
   updatedAt?: Date;
 };
+
+type TypeMapStateToProps = (state: any) => string[];
 
 interface IUsersState {
   users: TypeUser[];
@@ -46,10 +49,12 @@ interface IUsersState {
 
 interface ITasksState {
   tasks: TypeTask[];
+  tempTask: TypeTask;
   isFetching: boolean;
   error: string | null | undefined | unknown;
   isEmpty: boolean;
   isOpenNewTask: boolean;
+  isOpenUpdateTask: boolean;
 }
 
 enum EnumGender {
@@ -58,4 +63,4 @@ enum EnumGender {
   other,
 }
 
-export type { IUsersState, ITasksState, TypeUsersApp, TypeTasksApp, TypeUser, TypeTask };
+export type { IUsersState, ITasksState, ITasksApp, TypeMapStateToProps, TypeUsersApp, TypeUser, TypeTask };

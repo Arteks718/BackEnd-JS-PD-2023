@@ -1,12 +1,15 @@
-import { connect } from "react-redux";
 import { Formik, Field, Form } from "formik";
+import { connect } from "react-redux";
 import * as yup from "yup";
-import {
-  createTaskThunk,
-  isOpenNewTaskWindow,
-} from "../../../store/slices/tasksSlice";
-import { TypeTask } from "../../../types";
-import styled from "./AddNewTaskFrom.module.sass";
+import { TypeMapStateToProps, TypeTask } from "../../../types";
+import { isOpenUpdateTaskWindow, selectInitialValues } from "../../../store/slices/tasksSlice";
+import styled from "./UpdateTaskForm.module.sass";
+import { useSelector } from "react-redux";
+
+type TypeUpdateTaskForm = {
+  tempTask: TypeTask;
+  isUpdateTask: any;
+};
 
 const TaskFormSchema = yup.object().shape({
   body: yup
@@ -18,35 +21,22 @@ const TaskFormSchema = yup.object().shape({
   deadline: yup.date().required("Required").min(new Date()),
 });
 
-type TypeCreateTaskForm = {
-  createTask: any;
-  isNewTask: any;
-};
-
-function CreateTaskForm({ createTask, isNewTask }: TypeCreateTaskForm) {
-  const handleSubmit = (values: TypeTask, formikBag?: any) => {
-    createTask(values);
-    formikBag.resetForm();
-    isNewTask();
-  };
+function UpdateTaskForm({ tempTask, isUpdateTask }: TypeUpdateTaskForm) {
+  const initialValues:any = useSelector(selectInitialValues)
   return (
     <div>
       <Formik
-        initialValues={{
-          body: "",
-          isDone: false,
-          deadline: new Date(),
-        }}
+        initialValues={initialValues}
         validationSchema={TaskFormSchema}
-        onSubmit={handleSubmit}
+        onSubmit={() => {}}
       >
-        {({ errors, touched }) => (
+        {({ values, errors, touched }) => (
           <Form className={styled.formWindow}>
             <label htmlFor="body">
               <span>Body</span>
               <Field id="body" name="body" placeholder="Homework" />
               {errors.body && touched.body ? (
-                <div className={styled.error}>{errors.body}</div>
+                <div className={styled.error}></div>
               ) : null}
             </label>
 
@@ -65,7 +55,7 @@ function CreateTaskForm({ createTask, isNewTask }: TypeCreateTaskForm) {
 
             <div className={styled.formButtons}>
               <button type="submit">OK</button>
-              <button onClick={isNewTask}>CANCEL</button>
+              <button>CANCEL</button>
             </div>
           </Form>
         )}
@@ -74,16 +64,9 @@ function CreateTaskForm({ createTask, isNewTask }: TypeCreateTaskForm) {
   );
 }
 
-type TypeMapStateToProps = (state: any) => string[];
-type TypeMapDispatchToProps = (dispatch: any) => {
-  createTask: (task: TypeTask) => void;
-  isNewTask: () => void;
-};
-
 const mapStateToProps: TypeMapStateToProps = (state) => state.tasksData;
-const mapDispatchToProps: TypeMapDispatchToProps = (dispatch: any) => ({
-  createTask: (task) => dispatch(createTaskThunk(task)),
-  isNewTask: () => dispatch(isOpenNewTaskWindow()),
+const mapDispatchToProps = (dispatch: any) => ({
+  isUpdateTask: () => dispatch(isOpenUpdateTaskWindow()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateTaskForm);
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateTaskForm);

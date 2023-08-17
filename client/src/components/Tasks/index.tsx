@@ -4,10 +4,13 @@ import {
   getTasksThunk,
   deleteTaskThunk,
   isOpenNewTaskWindow,
+  isOpenUpdateTaskWindow,
+  updateShowTask
 } from "../../store/slices/tasksSlice";
-import CreateTaskForm from "./AddNewTaskForm";
-import { TypeTasksApp } from "../../types";
+import CreateTaskForm from "./CreateNewTaskForm";
+import { ITasksApp, TypeMapStateToProps, TypeTask } from "../../types";
 import styled from "./Tasks.module.sass";
+import UpdateTaskForm from "./UpdateTaskForm";
 
 function Tasks({
   tasks,
@@ -15,10 +18,13 @@ function Tasks({
   error,
   isEmpty,
   isOpenNewTask,
+  isOpenUpdateTask,
   getTasks,
   deleteTask,
   isNewTask,
-}: TypeTasksApp) {
+  isUpdateTask,
+  updateShowTask
+}: ITasksApp) {
   useEffect(() => {
     getTasks();
     // createTask()
@@ -57,29 +63,37 @@ function Tasks({
               <td>
                 <button onClick={() => deleteTask(task.id)}>DELETE</button>
               </td>
+              <td>
+                <button onClick={() => updateShowTask(task)}>UPDATE</button>
+              </td>
             </tr>
           </tbody>
         ))}
       </table>
-      <div className={styled.newTask}>
-        <button onClick={isNewTask} className={styled.createNewTaskButton}>
-          CREATE NEW TASK
-        </button>
-        {isOpenNewTask && (
-          <div className={styled.newTaskBlock}>
-            <CreateTaskForm />
-          </div>
-        )}
+      <div className={styled.buttons}>
+        <div className={styled.newTask}>
+          <button onClick={isNewTask}>CREATE NEW TASK</button>
+          {isOpenNewTask && <CreateTaskForm />}
+        </div>
+        <div className={styled.updateTask}>
+          <button onClick={isUpdateTask}>UPDATE TASK</button>
+          {isOpenUpdateTask && (
+            <UpdateTaskForm
+              tempTask={{ body: "", isDone: false, deadline: new Date().toLocaleString('uk-UA') }}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
 }
 
-type TypeMapStateToProps = (state: any) => string[];
 type TypeMapDispatchToProps = (dispatch: any) => {
   getTasks: () => void;
   deleteTask: (taskId: number) => void;
   isNewTask: () => boolean;
+  isUpdateTask: () => boolean;
+  updateShowTask: (task: TypeTask) => void;
 };
 
 const mapStateToProps: TypeMapStateToProps = (state) => state.tasksData;
@@ -87,6 +101,8 @@ const mapDispatchToProps: TypeMapDispatchToProps = (dispatch) => ({
   getTasks: () => dispatch(getTasksThunk()),
   deleteTask: (taskId) => dispatch(deleteTaskThunk(taskId)),
   isNewTask: () => dispatch(isOpenNewTaskWindow()),
+  isUpdateTask: () => dispatch(isOpenUpdateTaskWindow()),
+  updateShowTask: (task) => dispatch(updateShowTask(task))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tasks);
