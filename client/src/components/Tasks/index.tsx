@@ -27,7 +27,6 @@ function Tasks({
 }: ITasksApp) {
   useEffect(() => {
     getTasks();
-    // createTask()
   }, []);
   return (
     <div className={styled.container}>

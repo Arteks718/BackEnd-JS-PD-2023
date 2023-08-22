@@ -22,13 +22,16 @@ const TaskFormSchema = yup.object().shape({
 });
 
 function UpdateTaskForm({ tempTask, isUpdateTask }: TypeUpdateTaskForm) {
-  const initialValues:any = useSelector(selectInitialValues)
+  const initialValues:TypeTask = useSelector(selectInitialValues)
   return (
     <div>
       <Formik
         initialValues={initialValues}
+        enableReinitialize = { true }
         validationSchema={TaskFormSchema}
-        onSubmit={() => {}}
+        onSubmit={(values) => {
+          console.log(values)
+        }}
       >
         {({ values, errors, touched }) => (
           <Form className={styled.formWindow}>

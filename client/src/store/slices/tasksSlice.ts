@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from "@reduxjs/toolkit";
 import { getHttpTasks, deleteHttpTask, createHttpTask } from "../../api";
 import { ITasksState, TypeTask } from "../../types";
 
@@ -47,20 +51,22 @@ export const deleteTaskThunk = createAsyncThunk(
   }
 );
 
-const selectTestData = (state:any) => state.tasksData.tempTask
+const selectTempData = (state: any) => state.tasksData.tempTask;
 
-export const selectInitialValues:any = createSelector(
-  [selectTestData],
-  tempTask => ({
+export const selectInitialValues: any = createSelector(
+  [selectTempData],
+  (tempTask) => ({
+    id: tempTask.id,
     body: tempTask.body,
     isDone: tempTask.isDone,
     deadline: tempTask.deadline,
   })
-)
+);
 
 const initialState: ITasksState = {
   tasks: [],
   tempTask: {
+    id: null,
     body: "",
     isDone: false,
     deadline: new Date().toLocaleString(),
@@ -81,14 +87,18 @@ const tasksSlice = createSlice({
     },
     isOpenUpdateTaskWindow: (state) => {
       state.isOpenUpdateTask = state.isOpenUpdateTask ? false : true;
+      if (!state.isOpenUpdateTask) {
+        state.tempTask = {
+          id: null,
+          body: "",
+          isDone: false,
+          deadline: new Date().toLocaleString(),
+        };
+      }
     },
     updateShowTask: (state, { payload }) => {
-      state.isOpenUpdateTask = true
-      state.tempTask = payload
-      // state.isOpenUpdateTask = state.isOpenUpdateTask ? false : true;
-      // console.log("asdadasasd");
-      console.log(state.tempTask);
-      // dispatch(isOpenUpdateTaskWindow());
+      state.isOpenUpdateTask = true;
+      state.tempTask = payload;
     },
   },
   extraReducers: (builder) => {

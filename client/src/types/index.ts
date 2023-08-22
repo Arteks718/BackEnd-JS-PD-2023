@@ -31,7 +31,7 @@ type TypeUser = {
 };
 
 type TypeTask = {
-  id?:number;
+  id?:number | null;
   body: string;
   isDone: boolean;
   deadline: string;
