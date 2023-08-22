@@ -117,6 +117,11 @@ const pendingFunction = (state: ITasksState) => {
   state.error = null;
 };
 
+const rejectedFunction = (state: ITasksState, {payload}: any) => {
+  state.isFetching = false;
+  state.error = payload;
+}
+
 const tasksSlice = createSlice({
   name: "tasks",
   initialState,
@@ -160,10 +165,7 @@ const tasksSlice = createSlice({
         state.isEmpty = state.tasks.length === 0 ? true : false;
         state.tasks = payload;
       })
-      .addCase(getTasksThunk.rejected, (state, { payload }) => {
-        state.isFetching = false;
-        state.error = payload;
-      });
+      .addCase(getTasksThunk.rejected, rejectedFunction);
     // UPDATE
     builder
       .addCase(updateTaskThunk.pending, pendingFunction)
@@ -175,10 +177,7 @@ const tasksSlice = createSlice({
         state.tasks[updateTaskIndex] = { ...payload };
         console.log(payload);
       })
-      .addCase(updateTaskThunk.rejected, (state, { payload }) => {
-        state.isFetching = false;
-        state.error = payload;
-      });
+      .addCase(updateTaskThunk.rejected, rejectedFunction);
     // DELETE
     builder
       .addCase(deleteTaskThunk.pending, pendingFunction)
@@ -192,12 +191,14 @@ const tasksSlice = createSlice({
         });
         state.tasks.splice(findDeleteIndex, 1);
       })
-      .addCase(deleteTaskThunk.rejected, (state, { payload }) => {
-        state.isFetching = false;
-        state.error = payload;
-      });
+      .addCase(deleteTaskThunk.rejected, rejectedFunction);
     // DELETE ALL TASKS
-    // builder.addCase(deleteAllTasksThunk.pending, pendingFunction);
+    builder
+    .addCase(deleteAllTasksThunk.pending, pendingFunction)
+    .addCase(deleteAllTasksThunk.fulfilled, (state, { payload }) => {
+
+    })
+    .addCase(deleteAllTasksThunk.rejected, rejectedFunction)
   },
 });
 
