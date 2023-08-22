@@ -1,0 +1,6 @@
+PATCH http://localhost:5000/api/users/64e070c65428f526570b72f7 HTTP/1.1
+Content-Type: application/json
+
+{
+  "gender": "male"
+}
