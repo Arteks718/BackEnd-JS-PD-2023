@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import {
   getTasksThunk,
   deleteTaskThunk,
+  deleteAllTasksThunk,
   isOpenNewTaskWindow,
   isOpenUpdateTaskWindow,
   updateShowTask
@@ -21,6 +22,7 @@ function Tasks({
   isOpenUpdateTask,
   getTasks,
   deleteTask,
+  deleteAllTasks,
   isNewTask,
   isUpdateTask,
   updateShowTask
@@ -74,6 +76,9 @@ function Tasks({
           <button onClick={isNewTask}>CREATE NEW TASK</button>
           {isOpenNewTask && <CreateTaskForm />}
         </div>
+        <div className={styled.deleteAllTasks}>
+          <button onClick={deleteAllTasks}>DELETE ALL TASKS</button>
+        </div>
         <div className={styled.updateTask}>
           <button onClick={isUpdateTask}>UPDATE TASK</button>
           {isOpenUpdateTask && (
@@ -90,6 +95,7 @@ function Tasks({
 type TypeMapDispatchToProps = (dispatch: any) => {
   getTasks: () => void;
   deleteTask: (taskId: number) => void;
+  deleteAllTasks: () => void;
   isNewTask: () => boolean;
   isUpdateTask: () => boolean;
   updateShowTask: (task: TypeTask) => void;
@@ -99,6 +105,7 @@ const mapStateToProps: TypeMapStateToProps = (state) => state.tasksData;
 const mapDispatchToProps: TypeMapDispatchToProps = (dispatch) => ({
   getTasks: () => dispatch(getTasksThunk()),
   deleteTask: (taskId) => dispatch(deleteTaskThunk(taskId)),
+  deleteAllTasks: () => dispatch(deleteAllTasksThunk()),
   isNewTask: () => dispatch(isOpenNewTaskWindow()),
   isUpdateTask: () => dispatch(isOpenUpdateTaskWindow()),
   updateShowTask: (task) => dispatch(updateShowTask(task))

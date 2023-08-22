@@ -15,6 +15,7 @@ interface ITasksApp {
   isOpenUpdateTask: boolean;
   getTasks: any;
   deleteTask: any;
+  deleteAllTasks: any;
   isNewTask: any;
   isUpdateTask: any;
   updateShowTask: any;

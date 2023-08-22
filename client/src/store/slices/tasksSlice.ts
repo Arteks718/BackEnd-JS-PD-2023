@@ -196,7 +196,8 @@ const tasksSlice = createSlice({
     builder
     .addCase(deleteAllTasksThunk.pending, pendingFunction)
     .addCase(deleteAllTasksThunk.fulfilled, (state, { payload }) => {
-
+      state.isFetching = false;
+      state.tasks = [];
     })
     .addCase(deleteAllTasksThunk.rejected, rejectedFunction)
   },
