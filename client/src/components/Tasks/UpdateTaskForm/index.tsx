@@ -2,12 +2,13 @@ import { Formik, Field, Form } from "formik";
 import { connect } from "react-redux";
 import * as yup from "yup";
 import { TypeMapStateToProps, TypeTask } from "../../../types";
-import { isOpenUpdateTaskWindow, selectInitialValues } from "../../../store/slices/tasksSlice";
+import { isOpenUpdateTaskWindow, selectInitialValues, updateTaskThunk } from "../../../store/slices/tasksSlice";
 import styled from "./UpdateTaskForm.module.sass";
 import { useSelector } from "react-redux";
 
 type TypeUpdateTaskForm = {
   tempTask: TypeTask;
+  updateTask: any;
   isUpdateTask: any;
 };
 
@@ -21,17 +22,20 @@ const TaskFormSchema = yup.object().shape({
   deadline: yup.date().required("Required").min(new Date()),
 });
 
-function UpdateTaskForm({ tempTask, isUpdateTask }: TypeUpdateTaskForm) {
+function UpdateTaskForm({ tempTask, updateTask, isUpdateTask }: TypeUpdateTaskForm) {
   const initialValues:TypeTask = useSelector(selectInitialValues)
+  const handleSubmit = (values: TypeTask, formikBag?: any) => {
+    updateTask(values)
+    formikBag.resetForm();
+    isUpdateTask()
+  }
   return (
     <div>
       <Formik
         initialValues={initialValues}
         enableReinitialize = { true }
         validationSchema={TaskFormSchema}
-        onSubmit={(values) => {
-          console.log(values)
-        }}
+        onSubmit={handleSubmit}
       >
         {({ values, errors, touched }) => (
           <Form className={styled.formWindow}>
@@ -58,7 +62,7 @@ function UpdateTaskForm({ tempTask, isUpdateTask }: TypeUpdateTaskForm) {
 
             <div className={styled.formButtons}>
               <button type="submit">OK</button>
-              <button>CANCEL</button>
+              <button onClick={isUpdateTask}>CANCEL</button>
             </div>
           </Form>
         )}
@@ -69,6 +73,7 @@ function UpdateTaskForm({ tempTask, isUpdateTask }: TypeUpdateTaskForm) {
 
 const mapStateToProps: TypeMapStateToProps = (state) => state.tasksData;
 const mapDispatchToProps = (dispatch: any) => ({
+  updateTask: (task: TypeTask) => dispatch(updateTaskThunk(task)),
   isUpdateTask: () => dispatch(isOpenUpdateTaskWindow()),
 });
 
