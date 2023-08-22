@@ -84,4 +84,12 @@ module.exports = {
       next(error);
     }
   },
+  deleteAllTasks: async (req, res, next) => {
+    try {
+      const deletedTasks = await Task.destroy({ truncate: true, force: true });
+      res.status(204).end();
+    } catch (error) {
+      next(error);
+    }
+  },
 };

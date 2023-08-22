@@ -9,3 +9,4 @@ export const createHttpTask = (task: TypeTask) => httpClient.post(`/tasks`, task
 export const getHttpTasks = () => httpClient.get('/tasks')
 export const updateHttpTask = (task: TypeTask) => httpClient.patch(`/tasks/${task.id}`, task)
 export const deleteHttpTask = (taskId:number) => httpClient.delete(`/tasks/${taskId}`)
+export const deleteAllHttpTask = () => httpClient.delete(`/tasks`)

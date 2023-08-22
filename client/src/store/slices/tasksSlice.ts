@@ -3,7 +3,13 @@ import {
   createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
-import { getHttpTasks, deleteHttpTask, createHttpTask, updateHttpTask } from "../../api";
+import {
+  getHttpTasks,
+  deleteHttpTask,
+  createHttpTask,
+  updateHttpTask,
+  deleteAllHttpTask,
+} from "../../api";
 import { ITasksState, TypeTask } from "../../types";
 
 export const createTaskThunk = createAsyncThunk(
@@ -36,15 +42,15 @@ export const getTasksThunk = createAsyncThunk(
 
 export const updateTaskThunk = createAsyncThunk(
   "tasks/update",
-  async (task: TypeTask, { rejectWithValue } ) => {
+  async (task: TypeTask, { rejectWithValue }) => {
     try {
-      const { data } = await updateHttpTask(task)
-      return data
+      const { data } = await updateHttpTask(task);
+      return data;
     } catch (error) {
-      return rejectWithValue(error)
+      return rejectWithValue(error);
     }
   }
-)
+);
 
 export const deleteTaskThunk = createAsyncThunk(
   "tasks/delete",
@@ -65,22 +71,22 @@ export const deleteTaskThunk = createAsyncThunk(
 
 export const deleteAllTasksThunk = createAsyncThunk(
   "tasks/deleteAll",
-  async(payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      const isDeleteAllTask = window.confirm('Delete all tasks?');
-      if(isDeleteAllTask) {
-        await 
+      const isDeleteAllTask = window.confirm("Delete all tasks?");
+      if (isDeleteAllTask) {
+        await deleteAllHttpTask();
       } else {
         return;
       }
     } catch (error) {
-      return rejectWithValue(error)
+      return rejectWithValue(error);
     }
   }
-)
+);
 
+// Selector for updating data tempTask in form update
 const selectTempData = (state: any) => state.tasksData.tempTask;
-
 export const selectInitialValues: any = createSelector(
   [selectTempData],
   (tempTask) => ({
@@ -104,6 +110,11 @@ const initialState: ITasksState = {
   isEmpty: false,
   isOpenNewTask: false,
   isOpenUpdateTask: false,
+};
+
+const pendingFunction = (state: ITasksState) => {
+  state.isFetching = true;
+  state.error = null;
 };
 
 const tasksSlice = createSlice({
@@ -132,24 +143,18 @@ const tasksSlice = createSlice({
   extraReducers: (builder) => {
     // CREATE
     builder
-    .addCase(createTaskThunk.pending, (state) => {
-      state.isFetching = true;
-      state.error = null;
-    })
-    .addCase(createTaskThunk.fulfilled, (state, { payload }: any) => {
-      state.isFetching = false;
-      state.tasks.push(payload.data);
-    })
-    .addCase(createTaskThunk.rejected, (state, { payload }) => {
-      state.isFetching = false;
-      state.error = payload;
-    });
+      .addCase(createTaskThunk.pending, pendingFunction)
+      .addCase(createTaskThunk.fulfilled, (state, { payload }: any) => {
+        state.isFetching = false;
+        state.tasks.push(payload.data);
+      })
+      .addCase(createTaskThunk.rejected, (state, { payload }) => {
+        state.isFetching = false;
+        state.error = payload;
+      });
     // GET
     builder
-      .addCase(getTasksThunk.pending, (state) => {
-        state.isFetching = true;
-        state.error = null;
-      })
+      .addCase(getTasksThunk.pending, pendingFunction)
       .addCase(getTasksThunk.fulfilled, (state, { payload }) => {
         state.isFetching = false;
         state.isEmpty = state.tasks.length === 0 ? true : false;
@@ -161,17 +166,14 @@ const tasksSlice = createSlice({
       });
     // UPDATE
     builder
-      .addCase(updateTaskThunk.pending, (state) => {
-        state.isFetching = true
-        state.error = null;
-      })
-      .addCase(updateTaskThunk.fulfilled, (state, {payload}) => {
+      .addCase(updateTaskThunk.pending, pendingFunction)
+      .addCase(updateTaskThunk.fulfilled, (state, { payload }) => {
         state.isFetching = false;
         const updateTaskIndex = state.tasks.findIndex(
-          task => task.id === payload.id
-        )
-        state.tasks[updateTaskIndex] = {...payload}
-        console.log(payload)
+          (task) => task.id === payload.id
+        );
+        state.tasks[updateTaskIndex] = { ...payload };
+        console.log(payload);
       })
       .addCase(updateTaskThunk.rejected, (state, { payload }) => {
         state.isFetching = false;
@@ -179,10 +181,7 @@ const tasksSlice = createSlice({
       });
     // DELETE
     builder
-      .addCase(deleteTaskThunk.pending, (state) => {
-        state.isFetching = true;
-        state.error = null;
-      })
+      .addCase(deleteTaskThunk.pending, pendingFunction)
       .addCase(deleteTaskThunk.fulfilled, (state, { payload }) => {
         state.isFetching = false;
         if (payload === undefined) {
@@ -197,7 +196,8 @@ const tasksSlice = createSlice({
         state.isFetching = false;
         state.error = payload;
       });
-
+    // DELETE ALL TASKS
+    // builder.addCase(deleteAllTasksThunk.pending, pendingFunction);
   },
 });
 

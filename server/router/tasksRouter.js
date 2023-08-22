@@ -6,6 +6,7 @@ tasksRouter
   .route('/')
   .get(tasksController.getAllTask)
   .post(tasksController.createTask)
+  .delete(tasksController.deleteAllTasks)
 
 tasksRouter
   .route('/:taskId')
